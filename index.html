@@ -187,6 +187,38 @@
     .cover-stat-val { font-size:16px; font-weight:800; color:var(--gold); display:block; line-height:1; margin-bottom:2px; }
     .cover-stat-lbl { font-size:9px; color:var(--t3); letter-spacing:.5px; text-transform:uppercase; }
 
+    .today-card {
+      margin:-18px 16px 18px; position:relative; z-index:5;
+      background:linear-gradient(135deg,rgba(30,30,38,.96),rgba(20,20,24,.96));
+      border:1px solid rgba(201,169,110,.22); border-radius:var(--rxl);
+      padding:16px; box-shadow:var(--shadow);
+    }
+    .today-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+    .today-kicker { font-size:10px; font-weight:800; color:var(--gold); letter-spacing:1.2px; text-transform:uppercase; }
+    .today-live { display:inline-flex; align-items:center; gap:6px; color:var(--green); font-size:10px; font-weight:700; }
+    .today-live::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 0 4px rgba(76,175,121,.12); }
+    .today-main { display:flex; align-items:center; gap:13px; }
+    .today-img { width:64px; height:64px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:34px; flex-shrink:0; background:linear-gradient(140deg,#3a1f00,#7a4810 55%,#2a1500); }
+    .today-title { font-size:15px; font-weight:800; color:var(--t1); margin-bottom:3px; }
+    .today-sub { font-size:11px; color:var(--t2); line-height:1.45; }
+    .today-actions { display:flex; gap:8px; margin-top:14px; }
+    .today-actions button {
+      flex:1; border:1px solid var(--bdr-s); border-radius:var(--rmd);
+      background:var(--raised); color:var(--t1); padding:11px 10px;
+      font-size:11px; font-weight:800; font-family:inherit; cursor:pointer;
+    }
+    .today-actions button.primary { background:var(--gold); color:#0B0B0E; border-color:var(--gold); }
+
+    .value-strip {
+      margin:0 16px 18px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;
+    }
+    .value-chip {
+      background:rgba(255,255,255,.035); border:1px solid var(--bdr-s);
+      border-radius:var(--rmd); padding:10px 8px; text-align:center;
+    }
+    .value-num { display:block; color:var(--gold); font-size:15px; font-weight:900; line-height:1; margin-bottom:4px; }
+    .value-lbl { display:block; color:var(--t3); font-size:9px; font-weight:700; line-height:1.25; text-transform:uppercase; letter-spacing:.4px; }
+
     /* Index label */
     .index-label {
       padding:24px 20px 14px;
@@ -256,6 +288,17 @@
     .index-footer-text {}
     .index-footer-title { font-size:12px; font-weight:700; color:var(--gold); margin-bottom:2px; }
     .index-footer-sub   { font-size:11px; color:var(--t2); line-height:1.4; }
+
+    .flow-card {
+      margin:0 16px 14px; padding:16px;
+      background:linear-gradient(135deg,rgba(96,150,224,.08),rgba(201,169,110,.04));
+      border:1px solid rgba(96,150,224,.2); border-radius:var(--rxl);
+    }
+    .flow-title { font-size:13px; font-weight:800; color:var(--t1); margin-bottom:10px; }
+    .flow-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .flow-step { background:rgba(255,255,255,.035); border:1px solid var(--bdr-s); border-radius:var(--rmd); padding:10px 8px; }
+    .flow-step b { display:block; color:var(--gold); font-size:13px; margin-bottom:3px; }
+    .flow-step span { display:block; color:var(--t2); font-size:10px; line-height:1.35; }
 
     /* ════════════════════════════════════════
        PAGE HEADER (back + title)
@@ -712,6 +755,29 @@
       line-height:1.25; margin-bottom:8px;
     }
     .biz-final-sub { font-size:13px; color:var(--t2); line-height:1.65; margin-bottom:20px; }
+    .impact-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;
+    }
+    .impact-card {
+      background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+      border:1px solid var(--bdr-s); border-radius:var(--rmd); padding:14px;
+    }
+    .impact-num { font-size:20px; font-weight:900; color:var(--gold); line-height:1; margin-bottom:6px; }
+    .impact-title { font-size:12px; font-weight:800; color:var(--t1); margin-bottom:5px; }
+    .impact-copy { font-size:10px; color:var(--t2); line-height:1.45; }
+    .operator-panel {
+      background:linear-gradient(135deg,rgba(76,175,121,.08),rgba(96,150,224,.04));
+      border:1px solid rgba(76,175,121,.18); border-radius:var(--rxl);
+      padding:16px; margin-top:14px;
+    }
+    .operator-row {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      border-bottom:1px solid var(--bdr-s); padding:10px 0;
+    }
+    .operator-row:first-child { padding-top:0; }
+    .operator-row:last-child { border-bottom:none; padding-bottom:0; }
+    .operator-label { font-size:12px; color:var(--t2); }
+    .operator-value { font-size:12px; font-weight:800; color:var(--t1); text-align:right; }
     .btn-secondary {
       display:flex; align-items:center; justify-content:center; gap:8px;
       width:100%; background:none; border:1px solid var(--bdr);
@@ -764,6 +830,30 @@
       </div>
     </div>
 
+    <div class="today-card">
+      <div class="today-top">
+        <div class="today-kicker">Sugerencia inteligente del día</div>
+        <div class="today-live">Mesa 12 activa</div>
+      </div>
+      <div class="today-main">
+        <div class="today-img">🦞</div>
+        <div>
+          <div class="today-title">Risotto de Langosta</div>
+          <div class="today-sub">Plato premium recomendado por intención: mariscos, experiencia especial y maridaje con Chardonnay.</div>
+        </div>
+      </div>
+      <div class="today-actions">
+        <button class="primary" onclick="openModal(2)">Ver plato</button>
+        <button onclick="goPage('page-rec')">Recomendación IA</button>
+      </div>
+    </div>
+
+    <div class="value-strip">
+      <div class="value-chip"><span class="value-num">Visual</span><span class="value-lbl">Menos PDF</span></div>
+      <div class="value-chip"><span class="value-num">IA</span><span class="value-lbl">Guía al cliente</span></div>
+      <div class="value-chip"><span class="value-num">POS</span><span class="value-lbl">Redirección lista</span></div>
+    </div>
+
     <!-- Index divider -->
     <div class="index-label">
       <div class="index-label-line"></div>
@@ -810,6 +900,15 @@
         <span class="opt-arrow">›</span>
       </div>
 
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-title">Flujo que el cliente entiende en segundos</div>
+      <div class="flow-steps">
+        <div class="flow-step"><b>1</b><span>Explora platos visuales</span></div>
+        <div class="flow-step"><b>2</b><span>Personaliza y agrega</span></div>
+        <div class="flow-step"><b>3</b><span>Continúa al sistema actual</span></div>
+      </div>
     </div>
 
     <!-- Tarjeta Dishly visible — versión pitch/presentación -->
@@ -1042,6 +1141,28 @@
         <div class="pitch-label">La solución</div>
         <div class="pitch-title">La solución Dishly</div>
         <p class="pitch-text">Dishly transforma el menú QR en una experiencia visual e interactiva. El cliente puede explorar platos por categoría, recibir recomendaciones personalizadas, revisar ingredientes y alérgenos, y avanzar hacia el sistema de pedido o pago del restaurante — sin fricciones y sin descargar nada.</p>
+        <div class="impact-grid">
+          <div class="impact-card">
+            <div class="impact-num">+ claro</div>
+            <div class="impact-title">Decisión más rápida</div>
+            <div class="impact-copy">Fotos, etiquetas, disponibilidad y recomendaciones reducen dudas antes de ordenar.</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-num">+ visible</div>
+            <div class="impact-title">Platos rentables</div>
+            <div class="impact-copy">Favoritos, populares y sugerencias ayudan a destacar lo que el restaurante quiere vender.</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-num">+ seguro</div>
+            <div class="impact-title">Alérgenos visibles</div>
+            <div class="impact-copy">Ingredientes y alertas aparecen antes del pedido, sin depender solo del mesero.</div>
+          </div>
+          <div class="impact-card">
+            <div class="impact-num">+ flexible</div>
+            <div class="impact-title">Sin reemplazar POS</div>
+            <div class="impact-copy">Dishly puede terminar en POS, pago, WhatsApp, formulario o flujo existente.</div>
+          </div>
+        </div>
       </div>
 
       <div class="pitch-divider"></div>
@@ -1080,6 +1201,24 @@
           <span class="ftag">Alérgenos</span>
           <span class="ftag">Flujo de redirección</span>
           <span class="ftag">Analytics según plan</span>
+        </div>
+        <div class="operator-panel">
+          <div class="operator-row">
+            <span class="operator-label">Estado del menú</span>
+            <span class="operator-value">Activo · Mesa 12</span>
+          </div>
+          <div class="operator-row">
+            <span class="operator-label">Platos destacados</span>
+            <span class="operator-value">Chef + Populares</span>
+          </div>
+          <div class="operator-row">
+            <span class="operator-label">Destino del pedido</span>
+            <span class="operator-value">POS / WhatsApp / Pago</span>
+          </div>
+          <div class="operator-row">
+            <span class="operator-label">Señales medibles</span>
+            <span class="operator-value">Clicks, carrito, interés</span>
+          </div>
         </div>
       </div>
 
