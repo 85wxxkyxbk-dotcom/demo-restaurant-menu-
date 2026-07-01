@@ -344,9 +344,19 @@
     .dc-img-inner {
       width:100%; height:100%;
       display:flex; align-items:center; justify-content:center;
-      font-size:58px; transition:transform .4s var(--ease); user-select:none;
+      background-size:cover; background-position:center; background-repeat:no-repeat;
+      transition:transform .4s var(--ease); user-select:none;
     }
     .dc:hover .dc-img-inner { transform:scale(1.06); }
+    .dish-emoji {
+      display:inline-flex; align-items:center; justify-content:center;
+      width:42px; height:42px; border-radius:50%;
+      background:rgba(0,0,0,.42); border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 8px 22px rgba(0,0,0,.3);
+      font-size:24px; line-height:1;
+      backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    }
+    .dc-img-inner .dish-emoji { width:48px; height:48px; font-size:27px; }
     .avail-badge {
       position:absolute; top:10px; right:10px;
       border-radius:20px; padding:3px 9px;
@@ -415,6 +425,7 @@
     .chef-card-img {
       width:96px; height:96px; flex-shrink:0;
       display:flex; align-items:center; justify-content:center; font-size:40px;
+      background-size:cover; background-position:center; background-repeat:no-repeat;
     }
     .chef-card-body { padding:14px 16px; flex:1; display:flex; flex-direction:column; justify-content:space-between; }
     .chef-card-name { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--t1); margin-bottom:3px; }
@@ -432,7 +443,7 @@
       cursor:pointer; transition:all .22s var(--ease);
     }
     .pop-card:hover { border-color:var(--bdr); transform:translateY(-2px); }
-    .pop-img  { height:100px; display:flex; align-items:center; justify-content:center; font-size:46px; }
+    .pop-img  { height:100px; display:flex; align-items:center; justify-content:center; font-size:46px; background-size:cover; background-position:center; background-repeat:no-repeat; }
     .pop-body { padding:10px 12px 12px; }
     .pop-rank { font-size:9px; font-weight:800; color:var(--gold); letter-spacing:.8px; text-transform:uppercase; margin-bottom:3px; }
     .pop-name { font-size:13px; font-weight:700; color:var(--t1); margin-bottom:4px; line-height:1.2; }
@@ -497,7 +508,8 @@
       border-radius:var(--rlg); padding:14px;
       display:flex; gap:12px; margin-bottom:10px; align-items:flex-start;
     }
-    .res-img   { width:56px; height:56px; border-radius:var(--rsm); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:32px; }
+    .res-img   { width:56px; height:56px; border-radius:var(--rsm); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:32px; background-size:cover; background-position:center; background-repeat:no-repeat; overflow:hidden; }
+    .res-img .dish-emoji, .ci-img .dish-emoji { width:28px; height:28px; font-size:16px; }
     .res-info  { flex:1; }
     .res-match { font-size:10px; font-weight:700; color:var(--gold); letter-spacing:.5px; margin-bottom:3px; }
     .res-nm    { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--t1); margin-bottom:3px; }
@@ -560,7 +572,8 @@
     }
     @keyframes shUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
     .m-handle { width:36px; height:4px; background:rgba(255,255,255,.12); border-radius:2px; margin:12px auto 0; }
-    .m-d-img   { height:200px; display:flex; align-items:center; justify-content:center; font-size:76px; position:relative; }
+    .m-d-img   { height:200px; display:flex; align-items:center; justify-content:center; font-size:76px; position:relative; background-size:cover; background-position:center; background-repeat:no-repeat; overflow:hidden; }
+    .m-d-img .dish-emoji { width:58px; height:58px; font-size:34px; }
     .m-close   { position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%; background:rgba(0,0,0,.5); border:none; color:#fff; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
     .m-body    { padding:18px 22px 40px; }
     .m-meta    { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; }
@@ -600,7 +613,7 @@
     .cart-empty-tx { font-size:14px; color:var(--t2); }
     .cart-items { display:flex; flex-direction:column; gap:9px; margin-bottom:18px; }
     .ci        { display:flex; align-items:center; gap:11px; background:var(--raised); border:1px solid var(--bdr-s); border-radius:var(--rmd); padding:11px; }
-    .ci-img    { font-size:28px; flex-shrink:0; }
+    .ci-img    { width:48px; height:48px; border-radius:var(--rsm); font-size:28px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background-size:cover; background-position:center; background-repeat:no-repeat; overflow:hidden; }
     .ci-info   { flex:1; }
     .ci-nm     { font-size:13px; font-weight:600; color:var(--t1); margin-bottom:3px; }
     .ci-pr     { font-size:12px; font-weight:600; color:var(--gold); }
@@ -1438,6 +1451,30 @@ const DISHES = [
   { id:10, name:'Ribeye al Carbón',           price:52, cats:['principales','carnes'],              desc:'USDA Prime 28 días de maduración, a las brasas de mezquite. Papas fondant y chimichurri rojo.',           long:'Ribeye USDA Prime 28 días en seco, parrilla de mezquite. Sellado a fuego vivo, papas fondant al tomillo, espárragos y chimichurri rojo de la casa.',                                                                                                       ingredients:['Ribeye USDA Prime','Mezquite','Papas fondant','Espárragos','Chimichurri rojo','Mantequilla'], allergens:['Ninguno'],                                                spice:0, time:'30 min', tags:['chef','gf'],      avail:'sold',      chefFav:false, popular:true,  pairing:'Malbec Luján de Cuyo · Potencia que respeta al ribeye.',                customs:['Término: rojo','Término: tres cuartos','Término: bien cocido'], bg:'linear-gradient(140deg,#1a0000 0%,#600010 55%,#0f0000 100%)', em:'🥩' }
 ];
 
+const DISH_IMAGES = {
+  1: 'https://loremflickr.com/cache/resized/65535_50159691497_ba42432742_b_900_700_nofilter.jpg',
+  2: 'https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=900&q=80',
+  3: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=900&q=80',
+  4: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&w=900&q=80',
+  5: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=80',
+  6: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&q=80',
+  7: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80',
+  8: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=900&q=80',
+  9: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80',
+  10:'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=900&q=80'
+};
+DISHES.forEach(d => { d.img = DISH_IMAGES[d.id] || ''; });
+
+function dishImageStyle(d, shade = .28) {
+  return d.img
+    ? `background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,${shade})),url('${d.img}');background-color:#17151A`
+    : `background:${d.bg}`;
+}
+
+function dishImageMarkup(d, className, shade = .28) {
+  return `<div class="${className}" style="${dishImageStyle(d, shade)}"><span class="dish-emoji">${d.em}</span></div>`;
+}
+
 const TAGS  = { chef:['t-chef',"Chef's Pick"], pop:['t-pop','Popular'], hot:['t-hot','🌶 Picante'], gf:['t-gf','Sin gluten'], veg:['t-veg','Vegetariano'], new:['t-new','Nuevo'] };
 const AVAIL = { available:['av-ok','Disponible'], last:['av-last','Últimas unidades'], sold:['av-sold','Agotado'] };
 
@@ -1483,7 +1520,7 @@ function buildDishCard(d) {
   return `
   <div class="dc${d.avail==='sold'?' sold':''}">
     <div class="dc-img">
-      <div class="dc-img-inner" style="background:${d.bg}">${d.em}</div>
+      ${dishImageMarkup(d, 'dc-img-inner', .34)}
       <div class="avail-badge ${ac}">${al}</div>
     </div>
     <div class="dc-body">
@@ -1520,7 +1557,7 @@ document.getElementById('cats-inner').addEventListener('click', e => {
 function buildChefList() {
   document.getElementById('chef-list').innerHTML = DISHES.filter(d => d.chefFav).map(d => `
     <div class="chef-card" onclick="openModal(${d.id})">
-      <div class="chef-card-img" style="background:${d.bg}">${d.em}</div>
+      ${dishImageMarkup(d, 'chef-card-img', .32)}
       <div class="chef-card-body">
         <div><div class="chef-card-name">${d.name}</div><div class="chef-card-desc">${d.desc}</div></div>
         <div class="chef-card-foot">
@@ -1533,7 +1570,7 @@ function buildChefList() {
 function buildPopGrid() {
   document.getElementById('pop-grid').innerHTML = DISHES.filter(d => d.popular).map((d,i) => `
     <div class="pop-card" onclick="openModal(${d.id})">
-      <div class="pop-img" style="background:${d.bg}">${d.em}</div>
+      ${dishImageMarkup(d, 'pop-img', .32)}
       <div class="pop-body">
         <div class="pop-rank">#${i+1} más pedido</div>
         <div class="pop-name">${d.name}</div>
@@ -1548,10 +1585,10 @@ function openModal(id) {
   currentDish = DISHES.find(d => d.id===id);
   const d = currentDish;
   const img = document.getElementById('m-img');
-  img.style.background = d.bg;
-  const es = img.querySelector('.es'); if (es) es.remove();
+  img.setAttribute('style', dishImageStyle(d, .38));
+  const es = img.querySelector('.dish-emoji'); if (es) es.remove();
   const sp = document.createElement('span');
-  sp.className='es'; sp.style.cssText='font-size:76px;z-index:1;position:relative';
+  sp.className='dish-emoji';
   sp.textContent = d.em;
   img.insertBefore(sp, img.firstChild);
   document.getElementById('m-name').textContent  = d.name;
@@ -1585,7 +1622,7 @@ function addFromModal() { if(currentDish) addToCart(currentDish.id); closeModal(
 function addToCart(id) {
   const d = DISHES.find(x=>x.id===id); if(!d||d.avail==='sold') return;
   const ex = cart.find(x=>x.id===id);
-  ex ? ex.qty++ : cart.push({id:d.id,name:d.name,price:d.price,em:d.em,qty:1});
+  ex ? ex.qty++ : cart.push({id:d.id,name:d.name,price:d.price,em:d.em,img:d.img,bg:d.bg,qty:1});
   updateBadge();
   const b = document.getElementById('add-'+id);
   if (b) { b.classList.add('pulse'); setTimeout(()=>b.classList.remove('pulse'),400); }
@@ -1612,7 +1649,7 @@ function renderCart() {
   body.innerHTML = `
     <div class="cart-items">${cart.map(x=>`
       <div class="ci">
-        <div class="ci-img">${x.em}</div>
+        <div class="ci-img" style="${dishImageStyle(x, .34)}"><span class="dish-emoji">${x.em}</span></div>
         <div class="ci-info"><div class="ci-nm">${x.name}</div><div class="ci-pr">$${(x.price*x.qty).toFixed(2)}</div></div>
         <div class="ci-qty">
           <button class="qty-btn" onclick="changeQty(${x.id},-1)">−</button>
@@ -1757,7 +1794,7 @@ function showResults() {
   const alts = scored.filter(x=>!idealIds.has(x.d.id)).slice(0,3).map(x=>x.d);
   function buildResCard(d, label, labelColor) {
     return `<div class="res-card">
-      <div class="res-img" style="background:${d.bg}">${d.em}</div>
+      ${dishImageMarkup(d, 'res-img', .34)}
       <div class="res-info">
         <div class="res-match" style="color:${labelColor}">✦ ${label}</div>
         <div class="res-nm">${d.name}</div>
