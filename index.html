@@ -1,1907 +1,265 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="Demo de menú digital Dishly para Casa Marea, con platos visuales, recomendaciones IA y flujo de pedido para restaurante.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dishly convierte el menú de un restaurante en una experiencia visual, guiada y conectada con su flujo actual.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Casa Marea · Menú digital Dishly">
-  <meta property="og:description" content="Menú QR interactivo con fotos de platos, favoritos del chef y recomendaciones inteligentes.">
-  <meta property="og:url" content="https://85wxxkyxbk-dotcom.github.io/demo-restaurant-menu-/">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=1200&q=85">
-  <meta property="og:image:secure_url" content="https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=1200&q=85">
-  <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:title" content="Dishly · Menús que ayudan a elegir">
+  <meta property="og:description" content="Presentación interactiva de Dishly y demo del menú de Casa Marea.">
+  <meta property="og:image" content="assets/images/og-dishly.webp">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Casa Marea · Menú digital Dishly">
-  <meta name="twitter:description" content="Demo visual de menú digital con fotos, recomendaciones IA y flujo de pedido.">
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=1200&q=85">
-  <title>Dishly · Casa Marea — Pitch</title>
+  <meta name="theme-color" content="#10110f">
+  <title>Dishly · Menús que ayudan a elegir</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:       #0B0B0E;
-      --card:     #141418;
-      --hover:    #1A1A20;
-      --raised:   #1E1E26;
-      --gold:     #C9A96E;
-      --gold-lt:  #DFC08C;
-      --gold-dk:  #A07840;
-      --t1:       #F0EDE6;
-      --t2:       #9A9688;
-      --t3:       #52504C;
-      --green:    #4CAF79;
-      --orange:   #E08050;
-      --red:      #E05C5C;
-      --blue:     #6096E0;
-      --bdr:      rgba(201,169,110,0.13);
-      --bdr-s:    rgba(255,255,255,0.06);
-      --shadow:   0 6px 28px rgba(0,0,0,0.5);
-      --rsm: 8px; --rmd: 14px; --rlg: 20px; --rxl: 28px;
-      --ease:   cubic-bezier(0.4,0,0.2,1);
-      --spring: cubic-bezier(0.34,1.4,0.64,1);
-      --hh: 58px;
-      --mw: 480px;
-    }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { -webkit-tap-highlight-color:transparent; }
-    body {
-      font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-      background:var(--bg); color:var(--t1);
-      min-height:100vh; overflow-x:hidden;
-    }
-
-    /* ── App shell ── */
-    .app {
-      max-width:var(--mw); margin:0 auto;
-      min-height:100vh; position:relative;
-      background:var(--bg); overflow:hidden;
-    }
-    @media(min-width:600px) {
-      .app { border-left:1px solid var(--bdr-s); border-right:1px solid var(--bdr-s); }
-      body { background:#050508; }
-    }
-
-    /* ── Header ── */
-    .hdr {
-      position:fixed; top:0; left:50%; transform:translateX(-50%);
-      width:100%; max-width:var(--mw); height:var(--hh);
-      background:rgba(11,11,14,0.94);
-      backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
-      border-bottom:1px solid var(--bdr-s);
-      z-index:100; display:flex; align-items:center;
-      justify-content:space-between; padding:0 18px;
-    }
-    .hdr-left { display:flex; align-items:center; gap:10px; cursor:pointer; }
-    .hdr-back {
-      width:32px; height:32px; border-radius:50%;
-      border:1px solid var(--bdr-s); background:none;
-      color:var(--t2); font-size:16px; cursor:pointer;
-      display:none; align-items:center; justify-content:center;
-      transition:all .2s; flex-shrink:0;
-    }
-    .hdr-back.visible { display:flex; }
-    .hdr-back:hover { border-color:var(--gold); color:var(--gold); }
-    .hdr-logo {
-      width:32px; height:32px; border-radius:9px;
-      background:linear-gradient(135deg,#C9A96E,#7A5020);
-      display:flex; align-items:center; justify-content:center;
-      font-size:16px; flex-shrink:0;
-    }
-    .hdr-name {
-      font-family:'Playfair Display',serif;
-      font-size:15px; font-weight:700; color:var(--t1);
-    }
-    .hdr-sub {
-      font-size:9px; font-weight:600; color:var(--gold);
-      letter-spacing:.9px; text-transform:uppercase; margin-top:1px;
-    }
-    .hdr-right { display:flex; align-items:center; gap:9px; }
-    .lang-btn {
-      background:var(--card); border:1px solid var(--bdr);
-      border-radius:20px; padding:4px 10px;
-      font-size:11px; font-weight:700; color:var(--gold);
-      cursor:pointer; transition:all .2s;
-    }
-    .lang-btn:hover { background:var(--gold); color:var(--bg); }
-    .cart-btn {
-      position:relative; background:var(--card);
-      border:1px solid var(--bdr-s); border-radius:50%;
-      width:36px; height:36px;
-      display:flex; align-items:center; justify-content:center;
-      cursor:pointer; font-size:15px; transition:all .2s;
-    }
-    .cart-btn:hover { border-color:var(--gold); }
-    .cart-badge {
-      position:absolute; top:-4px; right:-4px;
-      background:var(--gold); color:var(--bg);
-      font-size:9px; font-weight:800;
-      width:16px; height:16px; border-radius:50%;
-      display:none; align-items:center; justify-content:center;
-    }
-    .cart-badge.on { display:flex; animation:pop .3s var(--spring); }
-
-    /* ── Page system ── */
-    .page {
-      position:absolute; inset:0;
-      padding-top:var(--hh); padding-bottom:20px;
-      overflow-y:auto; overflow-x:hidden;
-      transition:transform .32s var(--ease), opacity .32s var(--ease);
-      min-height:100vh;
-      -webkit-overflow-scrolling:touch;
-    }
-    .page.hidden       { transform:translateX(100%); opacity:0; pointer-events:none; }
-    .page.hidden-left  { transform:translateX(-30%); opacity:0; pointer-events:none; }
-    .page.active       { transform:translateX(0);   opacity:1; pointer-events:all; }
-
-    /* ════════════════════════════════════════
-       PAGE: INDEX (La carta)
-    ════════════════════════════════════════ */
-    #page-index {}
-
-    /* Cover hero */
-    .cover {
-      position:relative; min-height:46vh;
-      display:flex; flex-direction:column;
-      justify-content:flex-end; padding:0 22px 32px;
-      overflow:hidden;
-    }
-    .cover-bg {
-      position:absolute; inset:0;
-      background:linear-gradient(140deg,#0d1f2d 0%,#1a2a1e 25%,#1f1220 55%,#251a10 80%,#0f1a20 100%);
-    }
-    .cover-bg::after {
-      content:''; position:absolute; inset:0;
-      background:linear-gradient(180deg,rgba(11,11,14,.1) 0%,rgba(11,11,14,.55) 60%,var(--bg) 100%);
-    }
-    .cover-art {
-      position:absolute; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      font-size:110px; opacity:.14; filter:blur(3px);
-      user-select:none; letter-spacing:16px;
-    }
-    .cover-glow {
-      position:absolute; top:15%; left:15%;
-      width:180px; height:180px; border-radius:50%;
-      background:radial-gradient(circle,rgba(201,169,110,.13) 0%,transparent 70%);
-    }
-    .cover-content { position:relative; z-index:2; }
-    .cover-tag {
-      display:inline-flex; align-items:center; gap:6px;
-      background:rgba(201,169,110,.1); border:1px solid rgba(201,169,110,.22);
-      border-radius:20px; padding:4px 12px;
-      font-size:10px; font-weight:700; color:var(--gold);
-      letter-spacing:.8px; text-transform:uppercase; margin-bottom:12px;
-    }
-    .cover-dot { width:6px; height:6px; background:var(--green); border-radius:50%; }
-    .cover-title {
-      font-family:'Playfair Display',serif;
-      font-size:40px; font-weight:700; line-height:1.08;
-      color:var(--t1); margin-bottom:4px;
-    }
-    .cover-title em { color:var(--gold); font-style:italic; }
-    .cover-cuisine {
-      font-size:11px; font-weight:600; color:var(--gold);
-      letter-spacing:1.6px; text-transform:uppercase;
-      opacity:.8; margin-bottom:14px;
-    }
-    .cover-stats {
-      display:flex; gap:0;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--bdr-s); border-radius:var(--rmd);
-      overflow:hidden;
-    }
-    .cover-stat {
-      flex:1; padding:10px 8px; text-align:center;
-      border-right:1px solid var(--bdr-s);
-    }
-    .cover-stat:last-child { border-right:none; }
-    .cover-stat-val { font-size:16px; font-weight:800; color:var(--gold); display:block; line-height:1; margin-bottom:2px; }
-    .cover-stat-lbl { font-size:9px; color:var(--t3); letter-spacing:.5px; text-transform:uppercase; }
-
-    .today-card {
-      margin:-18px 16px 18px; position:relative; z-index:5;
-      background:linear-gradient(135deg,rgba(30,30,38,.96),rgba(20,20,24,.96));
-      border:1px solid rgba(201,169,110,.22); border-radius:var(--rxl);
-      padding:16px; box-shadow:var(--shadow);
-    }
-    .today-top { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
-    .today-kicker { font-size:10px; font-weight:800; color:var(--gold); letter-spacing:1.2px; text-transform:uppercase; }
-    .today-live { display:inline-flex; align-items:center; gap:6px; color:var(--green); font-size:10px; font-weight:700; }
-    .today-live::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); box-shadow:0 0 0 4px rgba(76,175,121,.12); }
-    .today-main { display:flex; align-items:center; gap:13px; }
-    .today-img { width:64px; height:64px; border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:34px; flex-shrink:0; background:linear-gradient(140deg,#3a1f00,#7a4810 55%,#2a1500); background-size:cover; background-position:center; overflow:hidden; }
-    .today-title { font-size:15px; font-weight:800; color:var(--t1); margin-bottom:3px; }
-    .today-sub { font-size:11px; color:var(--t2); line-height:1.45; }
-    .menu-peek { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:13px; }
-    .peek-dish {
-      min-height:58px; border-radius:var(--rmd); overflow:hidden; position:relative;
-      background-size:cover; background-position:center;
-      border:1px solid rgba(255,255,255,.1);
-    }
-    .peek-dish::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 20%,rgba(0,0,0,.68)); }
-    .peek-dish span {
-      position:absolute; left:8px; right:8px; bottom:7px; z-index:1;
-      color:#fff; font-size:10px; font-weight:800; line-height:1.15;
-      text-shadow:0 2px 8px rgba(0,0,0,.6);
-    }
-    .today-actions { display:flex; gap:8px; margin-top:14px; }
-    .today-actions button {
-      flex:1; border:1px solid var(--bdr-s); border-radius:var(--rmd);
-      background:var(--raised); color:var(--t1); padding:11px 10px;
-      font-size:11px; font-weight:800; font-family:inherit; cursor:pointer;
-    }
-    .today-actions button.primary { background:var(--gold); color:#0B0B0E; border-color:var(--gold); }
-
-    .value-strip {
-      margin:0 16px 18px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;
-    }
-    .value-chip {
-      background:rgba(255,255,255,.035); border:1px solid var(--bdr-s);
-      border-radius:var(--rmd); padding:10px 8px; text-align:center;
-    }
-    .value-num { display:block; color:var(--gold); font-size:15px; font-weight:900; line-height:1; margin-bottom:4px; }
-    .value-lbl { display:block; color:var(--t3); font-size:9px; font-weight:700; line-height:1.25; text-transform:uppercase; letter-spacing:.4px; }
-
-    /* Index label */
-    .index-label {
-      padding:24px 20px 14px;
-      display:flex; align-items:center; gap:10px;
-    }
-    .index-label-line {
-      flex:1; height:1px; background:var(--bdr-s);
-    }
-    .index-label-text {
-      font-size:10px; font-weight:700; color:var(--t3);
-      letter-spacing:1.5px; text-transform:uppercase;
-      white-space:nowrap;
-    }
-
-    /* Option cards — the "carta" */
-    .options-list {
-      padding:0 16px; display:flex; flex-direction:column; gap:10px;
-      padding-bottom:32px;
-    }
-    .opt-card {
-      background:var(--card); border:1px solid var(--bdr-s);
-      border-radius:var(--rxl); padding:18px 20px;
-      display:flex; align-items:center; gap:16px;
-      cursor:pointer; transition:all .22s var(--ease);
-      position:relative; overflow:hidden;
-      text-decoration:none;
-    }
-    .opt-card::before {
-      content:''; position:absolute;
-      inset:0; opacity:0;
-      background:linear-gradient(135deg,rgba(201,169,110,.06),rgba(201,169,110,.02));
-      transition:opacity .22s;
-    }
-    .opt-card:hover::before, .opt-card:active::before { opacity:1; }
-    .opt-card:hover { border-color:var(--bdr); transform:translateY(-1px); box-shadow:var(--shadow); }
-    .opt-card:active { transform:translateY(0) scale(.99); }
-
-    .opt-icon {
-      width:52px; height:52px; border-radius:16px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:26px; flex-shrink:0;
-    }
-    .opt-icon.gold  { background:linear-gradient(135deg,rgba(201,169,110,.18),rgba(201,169,110,.06)); border:1px solid rgba(201,169,110,.2); }
-    .opt-icon.blue  { background:linear-gradient(135deg,rgba(96,150,224,.18),rgba(96,150,224,.06));   border:1px solid rgba(96,150,224,.2); }
-    .opt-icon.green { background:linear-gradient(135deg,rgba(76,175,121,.18),rgba(76,175,121,.06));   border:1px solid rgba(76,175,121,.2); }
-    .opt-icon.orange{ background:linear-gradient(135deg,rgba(224,128,80,.18),rgba(224,128,80,.06));   border:1px solid rgba(224,128,80,.2); }
-    .opt-icon.purple{ background:linear-gradient(135deg,rgba(160,100,224,.18),rgba(160,100,224,.06)); border:1px solid rgba(160,100,224,.2); }
-
-    .opt-text { flex:1; }
-    .opt-title { font-size:15px; font-weight:700; color:var(--t1); margin-bottom:3px; }
-    .opt-desc  { font-size:12px; color:var(--t2); line-height:1.45; }
-
-    .opt-arrow {
-      font-size:16px; color:var(--t3); flex-shrink:0;
-      transition:transform .2s, color .2s;
-    }
-    .opt-card:hover .opt-arrow { transform:translateX(3px); color:var(--gold); }
-
-    /* Dishly footer on index */
-    .index-footer {
-      margin:0 16px 24px;
-      background:linear-gradient(135deg,rgba(201,169,110,.07),rgba(201,169,110,.02));
-      border:1px solid var(--bdr); border-radius:var(--rxl);
-      padding:16px 20px; display:flex; align-items:center; gap:14px;
-    }
-    .index-footer-ic { font-size:22px; }
-    .index-footer-text {}
-    .index-footer-title { font-size:12px; font-weight:700; color:var(--gold); margin-bottom:2px; }
-    .index-footer-sub   { font-size:11px; color:var(--t2); line-height:1.4; }
-
-    .flow-card {
-      margin:0 16px 14px; padding:16px;
-      background:linear-gradient(135deg,rgba(96,150,224,.08),rgba(201,169,110,.04));
-      border:1px solid rgba(96,150,224,.2); border-radius:var(--rxl);
-    }
-    .flow-title { font-size:13px; font-weight:800; color:var(--t1); margin-bottom:10px; }
-    .flow-steps { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
-    .flow-step { background:rgba(255,255,255,.035); border:1px solid var(--bdr-s); border-radius:var(--rmd); padding:10px 8px; }
-    .flow-step b { display:block; color:var(--gold); font-size:13px; margin-bottom:3px; }
-    .flow-step span { display:block; color:var(--t2); font-size:10px; line-height:1.35; }
-
-    /* ════════════════════════════════════════
-       PAGE HEADER (back + title)
-    ════════════════════════════════════════ */
-    .page-header {
-      padding:24px 20px 16px;
-      border-bottom:1px solid var(--bdr-s);
-      margin-bottom:4px;
-    }
-    .page-lbl  { font-size:10px; font-weight:700; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:5px; }
-    .page-title{ font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:var(--t1); line-height:1.2; }
-    .page-sub  { font-size:13px; color:var(--t2); line-height:1.6; margin-top:5px; }
-
-    /* ════════════════════════════════════════
-       PAGE: MENU
-    ════════════════════════════════════════ */
-    .cats {
-      overflow-x:auto; scrollbar-width:none;
-      padding:16px 20px 0; margin-bottom:20px;
-    }
-    .cats::-webkit-scrollbar { display:none; }
-    .cats-inner { display:flex; gap:7px; width:max-content; }
-    .cat {
-      background:var(--card); border:1px solid var(--bdr-s);
-      border-radius:20px; padding:7px 14px;
-      font-size:12px; font-weight:500; color:var(--t2);
-      cursor:pointer; transition:all .18s var(--ease); white-space:nowrap;
-    }
-    .cat:hover { border-color:var(--bdr); color:var(--t1); }
-    .cat.on { background:var(--gold); border-color:var(--gold); color:#0B0B0E; font-weight:700; }
-
-    .dishes { padding:0 16px 24px; display:grid; gap:14px; }
-    @media(min-width:480px) { .dishes { grid-template-columns:1fr 1fr; } }
-
-    .dc {
-      background:var(--card); border:1px solid var(--bdr-s);
-      border-radius:var(--rlg); overflow:hidden;
-      transition:all .22s var(--ease);
-    }
-    .dc:hover { border-color:var(--bdr); box-shadow:var(--shadow); }
-    .dc.sold  { opacity:.48; }
-    .dc-img   { width:100%; height:160px; position:relative; overflow:hidden; }
-    .dc-img-inner {
-      width:100%; height:100%;
-      display:flex; align-items:center; justify-content:center;
-      background-size:cover; background-position:center; background-repeat:no-repeat;
-      transition:transform .4s var(--ease); user-select:none;
-    }
-    .dc:hover .dc-img-inner { transform:scale(1.06); }
-    .dish-emoji {
-      display:inline-flex; align-items:center; justify-content:center;
-      width:42px; height:42px; border-radius:50%;
-      background:rgba(0,0,0,.42); border:1px solid rgba(255,255,255,.18);
-      box-shadow:0 8px 22px rgba(0,0,0,.3);
-      font-size:24px; line-height:1;
-      backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-    }
-    .dc-img-inner .dish-emoji { width:48px; height:48px; font-size:27px; }
-    .avail-badge {
-      position:absolute; top:10px; right:10px;
-      border-radius:20px; padding:3px 9px;
-      font-size:10px; font-weight:700; letter-spacing:.3px;
-    }
-    .av-ok   { background:rgba(76,175,121,.18); color:var(--green); border:1px solid rgba(76,175,121,.28); }
-    .av-last { background:rgba(224,128,80,.18); color:var(--orange); border:1px solid rgba(224,128,80,.28); }
-    .av-sold { background:rgba(224,92,92,.18);  color:var(--red);    border:1px solid rgba(224,92,92,.28); }
-    .dc-body { padding:13px; }
-    .dc-tags { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
-    .dtag { font-size:9px; font-weight:700; padding:3px 7px; border-radius:5px; letter-spacing:.4px; text-transform:uppercase; }
-    .t-chef  { background:rgba(201,169,110,.14); color:var(--gold);   border:1px solid rgba(201,169,110,.28); }
-    .t-pop   { background:rgba(224,128,80,.14);  color:var(--orange); border:1px solid rgba(224,128,80,.28); }
-    .t-hot   { background:rgba(224,80,80,.14);   color:#E05050;       border:1px solid rgba(224,80,80,.28); }
-    .t-gf    { background:rgba(76,175,121,.14);  color:var(--green);  border:1px solid rgba(76,175,121,.28); }
-    .t-veg   { background:rgba(130,200,90,.14);  color:#82C85A;       border:1px solid rgba(130,200,90,.28); }
-    .t-new   { background:rgba(96,150,224,.14);  color:var(--blue);   border:1px solid rgba(96,150,224,.28); }
-    .dc-name { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; color:var(--t1); margin-bottom:4px; line-height:1.2; }
-    .dc-desc { font-size:12px; color:var(--t2); line-height:1.5; margin-bottom:12px; }
-    .dc-foot { display:flex; align-items:center; justify-content:space-between; }
-    .dc-price{ font-size:18px; font-weight:700; color:var(--gold); }
-    .dc-price sub { font-size:10px; font-weight:400; color:var(--t2); vertical-align:baseline; }
-    .dc-acts { display:flex; gap:7px; }
-    .btn-ghost-sm {
-      background:none; border:1px solid var(--bdr-s); color:var(--t2);
-      border-radius:var(--rsm); padding:7px 11px;
-      font-size:11px; font-weight:500; cursor:pointer;
-      transition:all .18s; font-family:inherit;
-    }
-    .btn-ghost-sm:hover { border-color:var(--gold); color:var(--gold); }
-    .btn-gold-sm {
-      background:var(--gold); border:none; color:#0B0B0E;
-      border-radius:var(--rsm); padding:7px 13px;
-      font-size:11px; font-weight:800; cursor:pointer;
-      transition:all .18s; display:flex; align-items:center; gap:4px; font-family:inherit;
-    }
-    .btn-gold-sm:hover  { background:var(--gold-lt); }
-    .btn-gold-sm:active { transform:scale(.95); }
-    .btn-gold-sm:disabled { background:var(--t3); cursor:not-allowed; transform:none; }
-    .btn-gold-sm.pulse  { animation:addpulse .35s var(--spring); }
-    @keyframes addpulse { 0%{transform:scale(1)} 50%{transform:scale(1.2)} 100%{transform:scale(1)} }
-
-    /* ════════════════════════════════════════
-       PAGE: CHEF FAVS
-    ════════════════════════════════════════ */
-    .chef-banner {
-      margin:0 16px 18px;
-      background:linear-gradient(135deg,rgba(201,169,110,.1),rgba(201,169,110,.04));
-      border:1px solid var(--bdr); border-radius:var(--rxl);
-      padding:20px; display:flex; align-items:center; gap:14px;
-    }
-    .chef-ava {
-      width:50px; height:50px; border-radius:50%; flex-shrink:0;
-      background:linear-gradient(135deg,#C9A96E,#7A5020);
-      display:flex; align-items:center; justify-content:center; font-size:24px;
-    }
-    .chef-nm  { font-weight:700; font-size:13px; color:var(--t1); margin-bottom:3px; }
-    .chef-msg { font-size:11px; color:var(--t2); line-height:1.5; font-style:italic; }
-    .chef-dishes { padding:0 16px 24px; display:flex; flex-direction:column; gap:12px; }
-    .chef-card {
-      background:var(--card); border:1px solid var(--bdr);
-      border-radius:var(--rlg); overflow:hidden;
-      display:flex; transition:all .22s var(--ease); cursor:pointer;
-    }
-    .chef-card:hover { border-color:var(--gold-dk); box-shadow:0 4px 20px rgba(201,169,110,.14); transform:translateY(-1px); }
-    .chef-card-img {
-      width:96px; height:96px; flex-shrink:0;
-      display:flex; align-items:center; justify-content:center; font-size:40px;
-      background-size:cover; background-position:center; background-repeat:no-repeat;
-    }
-    .chef-card-body { padding:14px 16px; flex:1; display:flex; flex-direction:column; justify-content:space-between; }
-    .chef-card-name { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--t1); margin-bottom:3px; }
-    .chef-card-desc { font-size:11px; color:var(--t2); line-height:1.45; }
-    .chef-card-foot { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
-    .chef-card-price{ font-size:16px; font-weight:700; color:var(--gold); }
-
-    /* ════════════════════════════════════════
-       PAGE: POPULAR
-    ════════════════════════════════════════ */
-    .popular-grid { padding:0 16px 24px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .pop-card {
-      background:var(--card); border:1px solid var(--bdr-s);
-      border-radius:var(--rmd); overflow:hidden;
-      cursor:pointer; transition:all .22s var(--ease);
-    }
-    .pop-card:hover { border-color:var(--bdr); transform:translateY(-2px); }
-    .pop-img  { height:100px; display:flex; align-items:center; justify-content:center; font-size:46px; background-size:cover; background-position:center; background-repeat:no-repeat; }
-    .pop-body { padding:10px 12px 12px; }
-    .pop-rank { font-size:9px; font-weight:800; color:var(--gold); letter-spacing:.8px; text-transform:uppercase; margin-bottom:3px; }
-    .pop-name { font-size:13px; font-weight:700; color:var(--t1); margin-bottom:4px; line-height:1.2; }
-    .pop-price{ font-size:14px; font-weight:700; color:var(--gold); }
-    .pop-add  { display:block; width:100%; background:none; border:1px solid var(--bdr-s); border-radius:var(--rsm); padding:7px; font-size:11px; font-weight:600; color:var(--t2); cursor:pointer; transition:all .18s; margin-top:8px; font-family:inherit; }
-    .pop-add:hover { border-color:var(--gold); color:var(--gold); }
-
-    /* ════════════════════════════════════════
-       PAGE: RECOMMENDATION
-    ════════════════════════════════════════ */
-    .rec-wrap { padding:0 16px 32px; }
-    .rec-intro {
-      background:linear-gradient(135deg,rgba(201,169,110,.08),rgba(201,169,110,.03));
-      border:1px solid var(--bdr); border-radius:var(--rxl);
-      padding:22px; margin-bottom:24px; text-align:center;
-    }
-    .rec-intro-ic   { font-size:36px; display:block; margin-bottom:10px; }
-    .rec-intro-title{ font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--t1); margin-bottom:6px; }
-    .rec-intro-sub  { font-size:13px; color:var(--t2); line-height:1.6; }
-    .rec-prog { display:flex; gap:5px; margin-bottom:24px; }
-    .rec-dot  { flex:1; height:3px; border-radius:3px; background:var(--card); transition:background .3s; }
-    .rec-dot.done { background:var(--gold); }
-    .rec-step { display:none; }
-    .rec-step.on { display:block; animation:slideIn .3s var(--ease); }
-    @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-    .rec-q    { font-family:'Playfair Display',serif; font-size:21px; font-weight:700; color:var(--t1); line-height:1.25; margin-bottom:6px; }
-    .rec-hint { font-size:13px; color:var(--t2); margin-bottom:20px; }
-    .opts     { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
-    .opt-btn  {
-      background:var(--card); border:2px solid var(--bdr-s);
-      border-radius:var(--rmd); padding:14px 10px;
-      cursor:pointer; transition:all .2s var(--ease);
-      text-align:center; font-family:inherit;
-    }
-    .opt-btn:hover { border-color:var(--bdr); background:var(--hover); }
-    .opt-btn.on    { border-color:var(--gold); background:rgba(201,169,110,.08); }
-    .opt-ic { font-size:24px; display:block; margin-bottom:6px; }
-    .opt-lb { font-size:12px; font-weight:600; color:var(--t1); }
-    .rec-nav { display:flex; gap:10px; margin-top:22px; }
-    .btn-back-rec {
-      background:none; border:1px solid var(--bdr-s);
-      border-radius:var(--rmd); padding:12px 16px;
-      font-size:13px; font-weight:500; color:var(--t2);
-      cursor:pointer; transition:all .18s; font-family:inherit;
-    }
-    .btn-back-rec:hover { border-color:var(--bdr); color:var(--t1); }
-    .btn-next {
-      flex:1; background:var(--gold); border:none;
-      border-radius:var(--rmd); padding:13px;
-      font-size:14px; font-weight:700; color:#0B0B0E;
-      cursor:pointer; transition:all .2s; font-family:inherit;
-    }
-    .btn-next:hover { background:var(--gold-lt); }
-    .rec-results { display:none; }
-    .rec-results.on { display:block; animation:slideIn .35s var(--ease); }
-    .res-hdr { text-align:center; padding:6px 0 20px; }
-    .res-em  { font-size:42px; display:block; margin-bottom:10px; }
-    .res-ttl { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; color:var(--t1); margin-bottom:6px; }
-    .res-sub { font-size:13px; color:var(--t2); line-height:1.6; }
-    .res-card {
-      background:var(--card); border:1px solid var(--bdr);
-      border-radius:var(--rlg); padding:14px;
-      display:flex; gap:12px; margin-bottom:10px; align-items:flex-start;
-    }
-    .res-img   { width:56px; height:56px; border-radius:var(--rsm); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:32px; background-size:cover; background-position:center; background-repeat:no-repeat; overflow:hidden; }
-    .res-img .dish-emoji, .ci-img .dish-emoji { width:28px; height:28px; font-size:16px; }
-    .res-info  { flex:1; }
-    .res-match { font-size:10px; font-weight:700; color:var(--gold); letter-spacing:.5px; margin-bottom:3px; }
-    .res-nm    { font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--t1); margin-bottom:3px; }
-    .res-why   { font-size:11px; color:var(--t2); line-height:1.5; }
-    .res-price { font-size:13px; font-weight:700; color:var(--gold); margin-top:6px; }
-    .btn-retry {
-      width:100%; background:none; border:1px solid var(--bdr-s);
-      border-radius:var(--rlg); padding:13px;
-      font-size:13px; font-weight:600; color:var(--t2);
-      cursor:pointer; transition:all .18s; font-family:inherit; margin-top:8px;
-    }
-    .btn-retry:hover { border-color:var(--gold); color:var(--gold); }
-
-    /* ════════════════════════════════════════
-       PAGE: DISHLY (business)
-    ════════════════════════════════════════ */
-    .biz-content { padding:0 16px 32px; }
-    .biz-intro { text-align:center; padding:10px 0 24px; }
-    .biz-brand { font-size:12px; font-weight:800; color:var(--gold); letter-spacing:2px; text-transform:uppercase; display:block; margin-bottom:10px; }
-    .biz-tagline { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:var(--t1); margin-bottom:10px; line-height:1.2; }
-    .biz-sub { font-size:13px; color:var(--t2); line-height:1.65; }
-    .feats { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:20px 0 24px; }
-    .feat { background:var(--card); border:1px solid var(--bdr-s); border-radius:var(--rmd); padding:15px; }
-    .feat-ic  { font-size:22px; display:block; margin-bottom:7px; }
-    .feat-ttl { font-size:13px; font-weight:700; color:var(--t1); margin-bottom:4px; }
-    .feat-dsc { font-size:11px; color:var(--t2); line-height:1.5; }
-    .biz-cta {
-      background:linear-gradient(135deg,rgba(201,169,110,.1),rgba(201,169,110,.04));
-      border:1px solid var(--bdr); border-radius:var(--rxl); padding:24px; text-align:center;
-    }
-    .biz-cta-title{ font-size:16px; font-weight:700; color:var(--t1); margin-bottom:7px; }
-    .biz-cta-sub  { font-size:13px; color:var(--t2); line-height:1.6; margin-bottom:16px; }
-    .biz-badge { display:inline-flex; align-items:center; gap:7px; background:rgba(201,169,110,.08); border:1px solid var(--bdr); border-radius:20px; padding:8px 16px; font-size:11px; font-weight:700; color:var(--gold); letter-spacing:.5px; }
-
-    /* ════════════════════════════════════════
-       BUTTONS
-    ════════════════════════════════════════ */
-    .btn-primary {
-      display:flex; align-items:center; justify-content:center; gap:8px;
-      width:100%; background:var(--gold); border:none; color:#0B0B0E;
-      border-radius:var(--rlg); padding:15px 22px;
-      font-size:15px; font-weight:700; cursor:pointer;
-      transition:all .2s var(--ease); font-family:inherit;
-    }
-    .btn-primary:hover { background:var(--gold-lt); transform:translateY(-1px); }
-
-    /* ════════════════════════════════════════
-       MODAL
-    ════════════════════════════════════════ */
-    .m-ov {
-      position:fixed; inset:0; background:rgba(0,0,0,.82);
-      z-index:200; display:none; align-items:flex-end; justify-content:center;
-    }
-    .m-ov.on { display:flex; animation:ovIn .22s var(--ease); }
-    @keyframes ovIn { from{opacity:0} to{opacity:1} }
-    .m-sheet {
-      background:var(--card); border-radius:var(--rxl) var(--rxl) 0 0;
-      width:100%; max-width:var(--mw); max-height:92vh; overflow-y:auto;
-      animation:shUp .35s var(--spring);
-    }
-    @keyframes shUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-    .m-handle { width:36px; height:4px; background:rgba(255,255,255,.12); border-radius:2px; margin:12px auto 0; }
-    .m-d-img   { height:200px; display:flex; align-items:center; justify-content:center; font-size:76px; position:relative; background-size:cover; background-position:center; background-repeat:no-repeat; overflow:hidden; }
-    .m-d-img .dish-emoji { width:58px; height:58px; font-size:34px; }
-    .m-close   { position:absolute; top:12px; right:12px; width:32px; height:32px; border-radius:50%; background:rgba(0,0,0,.5); border:none; color:#fff; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-    .m-body    { padding:18px 22px 40px; }
-    .m-meta    { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; }
-    .m-name    { font-family:'Playfair Display',serif; font-size:21px; font-weight:700; color:var(--t1); flex:1; margin-right:12px; line-height:1.2; }
-    .m-price   { font-size:21px; font-weight:700; color:var(--gold); white-space:nowrap; }
-    .m-desc    { font-size:13px; color:var(--t2); line-height:1.65; margin-bottom:18px; }
-    .m-lbl     { font-size:10px; font-weight:700; color:var(--t3); letter-spacing:1.2px; text-transform:uppercase; margin-bottom:9px; }
-    .chips     { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
-    .chip      { border-radius:20px; padding:5px 12px; font-size:11px; color:var(--t2); background:var(--raised); border:1px solid var(--bdr-s); }
-    .chip.alg  { background:rgba(224,92,92,.08); color:var(--red); border-color:rgba(224,92,92,.2); }
-    .m-pills   { display:flex; gap:9px; margin-bottom:18px; }
-    .mpill     { flex:1; background:var(--raised); border:1px solid var(--bdr-s); border-radius:var(--rsm); padding:9px 10px; text-align:center; }
-    .mpill-lbl { font-size:9px; color:var(--t3); text-transform:uppercase; letter-spacing:.6px; margin-bottom:3px; }
-    .mpill-val { font-size:12px; font-weight:600; color:var(--t1); }
-    .c-opts    { display:flex; flex-direction:column; gap:7px; margin-bottom:18px; }
-    .c-opt     { display:flex; align-items:center; gap:10px; background:var(--raised); border:1px solid var(--bdr-s); border-radius:var(--rsm); padding:11px 13px; cursor:pointer; transition:border-color .18s; }
-    .c-opt:hover { border-color:var(--gold); }
-    .c-opt input { accent-color:var(--gold); width:15px; height:15px; }
-    .c-opt-lbl { font-size:12px; color:var(--t2); }
-    .pairing   { background:linear-gradient(135deg,rgba(201,169,110,.09),rgba(201,169,110,.03)); border:1px solid var(--bdr); border-radius:var(--rmd); padding:13px 15px; margin-bottom:22px; }
-    .pairing-lbl { font-size:10px; font-weight:700; color:var(--gold); letter-spacing:.8px; text-transform:uppercase; margin-bottom:5px; }
-    .pairing-txt { font-size:12px; color:var(--t2); line-height:1.55; }
-    .btn-add-full { width:100%; background:var(--gold); border:none; border-radius:var(--rlg); padding:16px; font-size:15px; font-weight:700; color:#0B0B0E; cursor:pointer; transition:all .2s; font-family:inherit; }
-    .btn-add-full:hover { background:var(--gold-lt); }
-
-    /* ════════════════════════════════════════
-       CART
-    ════════════════════════════════════════ */
-    .cart-ov { position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:300; display:none; align-items:flex-end; justify-content:center; }
-    .cart-ov.on { display:flex; animation:ovIn .22s; }
-    .cart-draw { background:var(--card); border-radius:var(--rxl) var(--rxl) 0 0; width:100%; max-width:var(--mw); max-height:82vh; overflow-y:auto; padding:18px 20px 40px; animation:shUp .3s var(--spring); }
-    .cart-hdr  { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--bdr-s); }
-    .cart-ttl  { font-family:'Playfair Display',serif; font-size:19px; font-weight:700; color:var(--t1); }
-    .cart-x    { width:30px; height:30px; background:var(--raised); border:1px solid var(--bdr-s); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px; color:var(--t2); }
-    .cart-empty-wrap { text-align:center; padding:36px 0; }
-    .cart-empty-ic { font-size:44px; display:block; margin-bottom:11px; }
-    .cart-empty-tx { font-size:14px; color:var(--t2); }
-    .cart-items { display:flex; flex-direction:column; gap:9px; margin-bottom:18px; }
-    .ci        { display:flex; align-items:center; gap:11px; background:var(--raised); border:1px solid var(--bdr-s); border-radius:var(--rmd); padding:11px; }
-    .ci-img    { width:48px; height:48px; border-radius:var(--rsm); font-size:28px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background-size:cover; background-position:center; background-repeat:no-repeat; overflow:hidden; }
-    .ci-info   { flex:1; }
-    .ci-nm     { font-size:13px; font-weight:600; color:var(--t1); margin-bottom:3px; }
-    .ci-pr     { font-size:12px; font-weight:600; color:var(--gold); }
-    .ci-qty    { display:flex; align-items:center; gap:7px; }
-    .qty-btn   { width:26px; height:26px; border-radius:50%; border:1px solid var(--bdr); background:none; color:var(--t1); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .18s; }
-    .qty-btn:hover { border-color:var(--gold); color:var(--gold); }
-    .qty-n     { font-size:13px; font-weight:600; color:var(--t1); min-width:18px; text-align:center; }
-    .cart-sum  { border-top:1px solid var(--bdr-s); padding-top:14px; margin-bottom:16px; }
-    .csum-row  { display:flex; justify-content:space-between; font-size:13px; color:var(--t2); margin-bottom:7px; }
-    .csum-row.tot { font-size:17px; font-weight:700; color:var(--t1); margin-top:10px; }
-    .csum-row.tot span:last-child { color:var(--gold); }
-    .btn-checkout { width:100%; background:var(--gold); border:none; border-radius:var(--rlg); padding:16px; font-size:15px; font-weight:700; color:#0B0B0E; cursor:pointer; transition:all .2s; font-family:inherit; margin-bottom:9px; }
-    .btn-checkout:hover { background:var(--gold-lt); }
-    .cart-disc { font-size:10px; color:var(--t3); text-align:center; line-height:1.55; }
-
-    /* ════════════════════════════════════════
-       PAYMENT & TOAST
-    ════════════════════════════════════════ */
-    #pay-screen { position:fixed; inset:0; background:var(--bg); z-index:400; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 30px; }
-    #pay-screen.on { display:flex; animation:slideIn .4s var(--ease); }
-    .pay-ic  { font-size:68px; margin-bottom:18px; }
-    .pay-ttl { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:var(--t1); margin-bottom:10px; }
-    .pay-tx  { font-size:14px; color:var(--t2); line-height:1.65; margin-bottom:22px; }
-    .pay-box { background:var(--card); border:1px solid var(--bdr); border-radius:var(--rlg); padding:16px 20px; font-size:12px; color:var(--t2); line-height:1.6; margin-bottom:24px; max-width:320px; }
-    .pay-box strong { color:var(--t1); }
-
-    .toast { position:fixed; top:70px; left:50%; z-index:600; transform:translateX(-50%) translateY(-14px); background:#1C1C26; border:1px solid var(--bdr); border-radius:30px; padding:10px 18px; display:flex; align-items:center; gap:9px; font-size:12px; font-weight:600; color:var(--t1); opacity:0; pointer-events:none; white-space:nowrap; transition:all .28s var(--spring); box-shadow:0 8px 24px rgba(0,0,0,.5); }
-    .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
-
-    @supports (height:100dvh) {
-      body, .app, .page { min-height:100dvh; }
-      .m-sheet { max-height:calc(100dvh - 10px); }
-      .cart-draw { max-height:calc(100dvh - 10px); }
-      #pay-screen { min-height:100dvh; }
-    }
-    .btn-ghost-sm, .btn-gold-sm, .btn-back-rec, .btn-next, .btn-retry, .btn-primary, .btn-secondary, .btn-add-full, .btn-checkout {
-      min-height:44px;
-    }
-    .m-body, .cart-draw {
-      padding-bottom:calc(40px + env(safe-area-inset-bottom));
-    }
-    @media(max-width:380px) {
-      :root { --hh:56px; }
-      .hdr { padding:0 12px; }
-      .hdr-name { font-size:14px; }
-      .hdr-sub { font-size:8.5px; }
-      .hdr-right { gap:6px; }
-      .lang-btn { padding:4px 8px; }
-      .cover { min-height:42vh; padding:0 18px 28px; }
-      .cover-title { font-size:34px; }
-      .cover-stats, .value-strip, .flow-steps { grid-template-columns:1fr; }
-      .today-main { align-items:flex-start; }
-      .today-actions { flex-direction:column; }
-      .dc-foot { flex-direction:column; align-items:stretch; gap:12px; }
-      .dc-acts { width:100%; }
-      .dc-acts button { flex:1; }
-      .toast { left:12px; right:12px; transform:translateY(-14px); white-space:normal; justify-content:center; text-align:center; }
-      .toast.on { transform:translateY(0); }
-    }
-
-    @keyframes pop   { from{transform:scale(0)} to{transform:scale(1)} }
-    @keyframes shake {
-      0%,100%{transform:translateX(0)}
-      20%{transform:translateX(-6px)}
-      40%{transform:translateX(6px)}
-      60%{transform:translateX(-4px)}
-      80%{transform:translateX(4px)}
-    }
-
-    /* ════════════════════════════════════════
-       PAGE: DISHLY — PITCH COMERCIAL
-    ════════════════════════════════════════ */
-    .biz-hero {
-      background:linear-gradient(160deg,rgba(160,100,224,.12),rgba(201,169,110,.08),rgba(160,100,224,.04));
-      border-bottom:1px solid var(--bdr-s);
-      padding:28px 20px 26px; text-align:center;
-    }
-    .biz-hero-badge {
-      display:inline-flex; align-items:center; gap:6px;
-      background:rgba(160,100,224,.12); border:1px solid rgba(160,100,224,.28);
-      border-radius:20px; padding:5px 14px;
-      font-size:10px; font-weight:700; color:#c084fc;
-      letter-spacing:.8px; text-transform:uppercase; margin-bottom:14px;
-    }
-    .biz-hero-title {
-      font-family:'Playfair Display',serif;
-      font-size:22px; font-weight:700; color:var(--t1);
-      line-height:1.22; margin-bottom:10px;
-    }
-    .biz-hero-sub {
-      font-size:13px; color:var(--t2); line-height:1.65; margin-bottom:20px;
-    }
-    .pitch-block { padding:22px 20px 0; }
-    .pitch-label {
-      font-size:9px; font-weight:800; color:var(--gold);
-      letter-spacing:1.8px; text-transform:uppercase; margin-bottom:6px;
-    }
-    .pitch-title {
-      font-family:'Playfair Display',serif;
-      font-size:18px; font-weight:700; color:var(--t1);
-      line-height:1.25; margin-bottom:10px;
-    }
-    .pitch-text { font-size:13px; color:var(--t2); line-height:1.65; }
-    .pitch-divider { height:1px; background:var(--bdr-s); margin:22px 20px 0; }
-    .prob-list { display:flex; flex-direction:column; gap:8px; margin-top:4px; }
-    .prob-item {
-      display:flex; align-items:flex-start; gap:10px;
-      background:var(--card); border:1px solid rgba(224,92,92,.14);
-      border-radius:var(--rmd); padding:12px 14px;
-    }
-    .prob-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
-    .prob-text { font-size:12px; color:var(--t2); line-height:1.5; }
-    .feature-wrap { display:flex; flex-wrap:wrap; gap:7px; margin-top:4px; }
-    .ftag {
-      background:var(--card); border:1px solid var(--bdr-s);
-      border-radius:20px; padding:5px 12px;
-      font-size:11px; font-weight:500; color:var(--t2);
-    }
-    .ftag.active {
-      background:rgba(201,169,110,.08); border-color:rgba(201,169,110,.25);
-      color:var(--gold);
-    }
-    .integration-note {
-      background:rgba(96,150,224,.07); border:1px solid rgba(96,150,224,.2);
-      border-radius:var(--rmd); padding:13px 15px; margin-top:14px;
-      font-size:11px; color:var(--t2); line-height:1.6;
-    }
-    .integration-note strong { color:var(--blue); }
-    .benefit-list { display:flex; flex-direction:column; gap:12px; margin-top:4px; }
-    .benefit-item { display:flex; align-items:flex-start; gap:10px; }
-    .benefit-ic { color:var(--green); font-size:15px; flex-shrink:0; margin-top:2px; font-weight:700; }
-    .benefit-text { font-size:13px; color:var(--t1); line-height:1.45; font-weight:600; }
-    .benefit-sub  { font-size:11px; color:var(--t2); margin-top:2px; line-height:1.5; }
-    .levels-wrap { display:flex; flex-direction:column; gap:10px; margin-top:14px; }
-    .level-card {
-      background:var(--card); border:1px solid var(--bdr-s);
-      border-radius:var(--rlg); overflow:hidden;
-    }
-    .level-card.featured {
-      border-color:rgba(201,169,110,.3);
-      background:linear-gradient(135deg,rgba(201,169,110,.06),var(--card));
-    }
-    .level-hdr {
-      padding:13px 16px 10px;
-      display:flex; align-items:center; justify-content:space-between;
-      border-bottom:1px solid var(--bdr-s);
-    }
-    .level-name { font-size:14px; font-weight:800; color:var(--t1); }
-    .level-badge-tag {
-      font-size:9px; font-weight:700; padding:3px 9px;
-      border-radius:10px; letter-spacing:.5px; text-transform:uppercase;
-    }
-    .lbt-base    { background:rgba(150,150,150,.12); color:var(--t2);  border:1px solid var(--bdr-s); }
-    .lbt-pro     { background:rgba(201,169,110,.12); color:var(--gold); border:1px solid rgba(201,169,110,.25); }
-    .lbt-premium { background:rgba(160,100,224,.12); color:#c084fc;     border:1px solid rgba(160,100,224,.25); }
-    .level-items { padding:12px 16px 14px; display:flex; flex-direction:column; gap:6px; }
-    .level-item { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--t2); }
-    .level-item::before { content:'·'; color:var(--gold); font-size:16px; line-height:1; flex-shrink:0; }
-    .steps-list { display:flex; flex-direction:column; gap:0; margin-top:14px; }
-    .step-item  { display:flex; gap:14px; padding-bottom:20px; position:relative; }
-    .step-item:last-child { padding-bottom:0; }
-    .step-num {
-      width:30px; height:30px; border-radius:50%; flex-shrink:0;
-      background:rgba(201,169,110,.12); border:1px solid rgba(201,169,110,.28);
-      display:flex; align-items:center; justify-content:center;
-      font-size:12px; font-weight:800; color:var(--gold); position:relative; z-index:1;
-    }
-    .step-num::after {
-      content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
-      width:1px; height:20px; background:var(--bdr-s);
-    }
-    .step-item:last-child .step-num::after { display:none; }
-    .step-text { font-size:13px; color:var(--t2); line-height:1.55; padding-top:5px; }
-    .biz-final-cta {
-      margin:22px 16px 36px;
-      background:linear-gradient(135deg,rgba(160,100,224,.1),rgba(201,169,110,.07));
-      border:1px solid rgba(160,100,224,.22);
-      border-radius:var(--rxl); padding:26px 20px; text-align:center;
-    }
-    .biz-final-title {
-      font-family:'Playfair Display',serif;
-      font-size:20px; font-weight:700; color:var(--t1);
-      line-height:1.25; margin-bottom:8px;
-    }
-    .biz-final-sub { font-size:13px; color:var(--t2); line-height:1.65; margin-bottom:20px; }
-    .impact-grid {
-      display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;
-    }
-    .impact-card {
-      background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
-      border:1px solid var(--bdr-s); border-radius:var(--rmd); padding:14px;
-    }
-    .impact-num { font-size:20px; font-weight:900; color:var(--gold); line-height:1; margin-bottom:6px; }
-    .impact-title { font-size:12px; font-weight:800; color:var(--t1); margin-bottom:5px; }
-    .impact-copy { font-size:10px; color:var(--t2); line-height:1.45; }
-    .operator-panel {
-      background:linear-gradient(135deg,rgba(76,175,121,.08),rgba(96,150,224,.04));
-      border:1px solid rgba(76,175,121,.18); border-radius:var(--rxl);
-      padding:16px; margin-top:14px;
-    }
-    .operator-row {
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      border-bottom:1px solid var(--bdr-s); padding:10px 0;
-    }
-    .operator-row:first-child { padding-top:0; }
-    .operator-row:last-child { border-bottom:none; padding-bottom:0; }
-    .operator-label { font-size:12px; color:var(--t2); }
-    .operator-value { font-size:12px; font-weight:800; color:var(--t1); text-align:right; }
-    .btn-secondary {
-      display:flex; align-items:center; justify-content:center; gap:8px;
-      width:100%; background:none; border:1px solid var(--bdr);
-      color:var(--t1); border-radius:var(--rlg); padding:14px 22px;
-      font-size:14px; font-weight:600; cursor:pointer;
-      transition:all .2s var(--ease); font-family:inherit; margin-top:9px;
-    }
-    .btn-secondary:hover { border-color:var(--gold); color:var(--gold); }
-  </style>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
 </head>
-<body>
-<div class="app">
+<body class="pitch-page">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <!-- ══════════ HEADER ══════════ -->
-  <header class="hdr">
-    <div class="hdr-left">
-      <button class="hdr-back" id="hdr-back" onclick="goIndex()">←</button>
-      <div class="hdr-logo" onclick="goIndex()" style="cursor:pointer">🌊</div>
-      <div onclick="goIndex()" style="cursor:pointer">
-        <div class="hdr-name">Casa Marea</div>
-        <div class="hdr-sub" id="hdr-sub">Mesa 12 · Dishly</div>
-      </div>
-    </div>
-    <div class="hdr-right">
-      <button class="lang-btn" id="lang-btn" onclick="toggleLang()">ES</button>
-      <div class="cart-btn" onclick="openCart()">
-        🛒
-        <div class="cart-badge" id="cart-badge">0</div>
-      </div>
-    </div>
+  <header class="site-header" data-header>
+    <a class="brand" href="#inicio" aria-label="Dishly, inicio">
+      <span class="brand-mark" aria-hidden="true">D</span>
+      <span>Dishly</span>
+    </a>
+    <nav class="desktop-nav" aria-label="Navegación principal">
+      <a href="#comparacion">Antes y después</a>
+      <a href="#restaurante">Para el restaurante</a>
+      <a href="#integracion">Integración</a>
+    </nav>
+    <a class="button button-small button-light" href="menu.html">Abrir demo</a>
   </header>
 
-  <!-- ══════════ PAGE: INDEX ══════════ -->
-  <div class="page active" id="page-index">
-
-    <!-- Cover -->
-    <div class="cover">
-      <div class="cover-bg"></div>
-      <div class="cover-art">🦞🐟🍝</div>
-      <div class="cover-glow"></div>
-      <div class="cover-content">
-        <div class="cover-tag"><span class="cover-dot"></span>Menú digital · Dishly</div>
-        <h1 class="cover-title">Casa <em>Marea</em></h1>
-        <div class="cover-cuisine">Mediterráneo · Fusión moderna</div>
-        <div class="cover-stats">
-          <div class="cover-stat"><span class="cover-stat-val">10</span><span class="cover-stat-lbl">Platos</span></div>
-          <div class="cover-stat"><span class="cover-stat-val">⭐</span><span class="cover-stat-lbl">4.9</span></div>
-          <div class="cover-stat"><span class="cover-stat-val">12</span><span class="cover-stat-lbl">Años</span></div>
+  <main id="contenido">
+    <section class="pitch-hero" id="inicio" aria-labelledby="hero-title">
+      <img class="pitch-hero-media" src="assets/images/hero-casa-marea.webp" alt="Plato de mariscos con hierbas frescas en Casa Marea" width="1800" height="1200">
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="pitch-hero-content">
+        <p class="eyebrow">Menú interactivo para restaurantes</p>
+        <h1 id="hero-title">Dishly</h1>
+        <p class="hero-offer">El menú que presenta mejor cada plato y ayuda al cliente a decidir.</p>
+        <p class="hero-copy">Una capa visual para el QR o la tablet del restaurante, conectada con el pedido o pago que ya utiliza.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="menu.html">Probar Casa Marea</a>
+          <button class="button button-ghost" type="button" data-open-contact>Solicitar demo personalizada</button>
         </div>
       </div>
-    </div>
+      <a class="hero-next" href="#problema">Descubrir Dishly <span aria-hidden="true">↓</span></a>
+    </section>
 
-    <div class="today-card">
-      <div class="today-top">
-        <div class="today-kicker">Sugerencia inteligente del día</div>
-        <div class="today-live">Mesa 12 activa</div>
+    <section class="section section-problem" id="problema">
+      <div class="section-heading">
+        <p class="eyebrow">El problema</p>
+        <h2>Un PDF muestra platos.<br>Dishly ayuda a elegirlos.</h2>
+        <p>Muchos menús QR trasladan el papel al teléfono sin aprovechar lo que una experiencia digital puede resolver.</p>
       </div>
-      <div class="today-main">
-        <div class="today-img" style="background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.36)),url('https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=400&q=80')"><span class="dish-emoji">🦞</span></div>
-        <div>
-          <div class="today-title">Risotto de Langosta</div>
-          <div class="today-sub">Plato premium recomendado por intención: mariscos, experiencia especial y maridaje con Chardonnay.</div>
+      <div class="problem-list" aria-label="Problemas frecuentes de los menús QR">
+        <div><strong>01</strong><span>Texto pequeño y navegación difícil.</span></div>
+        <div><strong>02</strong><span>Poca claridad sobre ingredientes y alérgenos.</span></div>
+        <div><strong>03</strong><span>El cliente sigue sin saber qué pedir.</span></div>
+        <div><strong>04</strong><span>Disponibilidad y platos clave pasan desapercibidos.</span></div>
+      </div>
+    </section>
+
+    <section class="section compare-section" id="comparacion">
+      <div class="section-heading">
+        <p class="eyebrow">Antes y después</p>
+        <h2>La diferencia se entiende en segundos.</h2>
+      </div>
+      <div class="compare-grid">
+        <article class="compare-side compare-old">
+          <div class="compare-browser" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <p class="compare-kicker">Menú QR tradicional</p>
+          <h3>Un documento dentro del teléfono.</h3>
+          <ul class="feature-list muted-list">
+            <li>Abre un PDF</li>
+            <li>Texto pequeño</li>
+            <li>Sin recomendaciones</li>
+            <li>Sin disponibilidad actualizada</li>
+            <li>Sin personalización guiada</li>
+          </ul>
+        </article>
+        <article class="compare-side compare-new">
+          <div class="menu-preview" aria-label="Vista ilustrativa del menú Dishly">
+            <img src="assets/images/branzino.jpg" alt="" width="1200" height="900" loading="lazy">
+            <div>
+              <small>Casa Marea</small>
+              <strong>Branzino a la parrilla</strong>
+              <span>Ingredientes · alérgenos · disponibilidad</span>
+            </div>
+          </div>
+          <p class="compare-kicker">Dishly</p>
+          <h3>Una experiencia diseñada para decidir.</h3>
+          <ul class="feature-list">
+            <li>Platos visuales</li>
+            <li>Ingredientes y alérgenos</li>
+            <li>Recomendaciones guiadas</li>
+            <li>Disponibilidad visible</li>
+            <li>Personalización y carrito</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section how-section" id="como-funciona">
+      <div class="section-heading">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2>Una capa útil entre el QR y el sistema actual.</h2>
+      </div>
+      <ol class="how-steps">
+        <li>
+          <span>1</span>
+          <div><h3>Explora</h3><p>El cliente navega platos reales, categorías, ingredientes y disponibilidad.</p></div>
+        </li>
+        <li>
+          <span>2</span>
+          <div><h3>Decide</h3><p>El asistente de elección filtra preferencias y explica cada recomendación.</p></div>
+        </li>
+        <li>
+          <span>3</span>
+          <div><h3>Personaliza</h3><p>Extras, cambios y notas quedan reflejados en el pedido.</p></div>
+        </li>
+        <li>
+          <span>4</span>
+          <div><h3>Continúa</h3><p>Dishly transfiere al flujo de pedido o pago configurado por el restaurante.</p></div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="demo-band" aria-labelledby="demo-title">
+      <img src="assets/images/tacos-short-rib.webp" alt="Tacos de short rib de Casa Marea" width="1200" height="900" loading="lazy">
+      <div class="demo-band-copy">
+        <p class="eyebrow">Demo del comensal</p>
+        <h2 id="demo-title">No te lo contamos.<br>Te dejamos probarlo.</h2>
+        <p>Explora Casa Marea, pide una recomendación, personaliza un plato y completa la transferencia simulada.</p>
+        <a class="button button-primary" href="menu.html">Entrar al menú</a>
+      </div>
+    </section>
+
+    <section class="section restaurant-section" id="restaurante">
+      <div class="section-heading">
+        <p class="eyebrow">Control del restaurante</p>
+        <h2>El equipo decide qué se muestra y cómo se vende.</h2>
+        <p>Este teaser representa el panel que controlaría el restaurante. No es un dashboard conectado.</p>
+      </div>
+      <div class="dashboard-teaser">
+        <div class="dashboard-sidebar" aria-hidden="true">
+          <span class="dash-logo">D</span>
+          <span class="dash-nav active">Menú</span>
+          <span class="dash-nav">Disponibilidad</span>
+          <span class="dash-nav">Actividad</span>
+        </div>
+        <div class="dashboard-main">
+          <div class="dash-head">
+            <div><small>Casa Marea</small><h3>Control del menú</h3></div>
+            <span class="demo-label">Datos de demostración</span>
+          </div>
+          <div class="metric-row">
+            <div><strong>428</strong><span>Platos visualizados</span></div>
+            <div><strong>31%</strong><span>Recomendaciones agregadas</span></div>
+            <div><strong>Risotto</strong><span>Mayor interés</span></div>
+          </div>
+          <div class="dish-control-list">
+            <div class="dish-control" data-control-row>
+              <img src="assets/images/risotto-langosta.webp" alt="" width="1200" height="900" loading="lazy">
+              <div><strong>Risotto de langosta</strong><span>Principal · Mariscos</span></div>
+              <label class="price-control">Precio <input type="number" value="47" min="0" aria-label="Precio de Risotto de langosta"></label>
+              <label class="switch"><input type="checkbox" checked><span></span><em>Disponible</em></label>
+              <label class="switch"><input type="checkbox" checked><span></span><em>Destacado</em></label>
+            </div>
+            <div class="dish-control" data-control-row>
+              <img src="assets/images/ribeye.webp" alt="" width="1200" height="900" loading="lazy">
+              <div><strong>Ribeye al carbón</strong><span>Principal · Carnes</span></div>
+              <label class="price-control">Precio <input type="number" value="52" min="0" aria-label="Precio de Ribeye al carbón"></label>
+              <label class="switch"><input type="checkbox"><span></span><em>Agotado</em></label>
+              <label class="switch"><input type="checkbox"><span></span><em>Destacado</em></label>
+            </div>
+          </div>
+          <div class="special-editor">
+            <div><small>Especial del día</small><strong data-special-label>Branzino al limón Meyer</strong></div>
+            <button class="button button-small button-dark" type="button" data-change-special>Cambiar especial</button>
+          </div>
         </div>
       </div>
-      <div class="menu-peek">
-        <div class="peek-dish" style="background-image:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.3)),url('https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=420&q=80')"><span>Short Rib Tacos</span></div>
-        <div class="peek-dish" style="background-image:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.3)),url('https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=420&q=80')"><span>Pasta Trufada</span></div>
-        <div class="peek-dish" style="background-image:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.3)),url('https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=420&q=80')"><span>Ribeye</span></div>
+      <p class="dashboard-note">Los controles son interactivos para ilustrar el concepto. Los datos y cambios permanecen únicamente en esta demostración.</p>
+    </section>
+
+    <section class="section integration-section" id="integracion">
+      <div class="integration-copy">
+        <p class="eyebrow">Complementa al POS</p>
+        <h2>Dishly no reemplaza la operación del restaurante.</h2>
+        <p>Presenta el menú, guía la decisión y prepara el pedido. Después continúa al POS, pago, formulario o flujo que el restaurante haya configurado.</p>
       </div>
-      <div class="today-actions">
-        <button class="primary" onclick="openModal(2)">Ver plato</button>
-        <button onclick="goPage('page-rec')">Recomendación IA</button>
+      <div class="flow-diagram" aria-label="Flujo de Dishly hacia el sistema del restaurante">
+        <div><small>Experiencia</small><strong>Dishly</strong></div>
+        <span aria-hidden="true">→</span>
+        <div><small>Destino configurable</small><strong>POS · Pago · Pedido</strong></div>
       </div>
-    </div>
+    </section>
 
-    <div class="value-strip">
-      <div class="value-chip"><span class="value-num">Visual</span><span class="value-lbl">Menos PDF</span></div>
-      <div class="value-chip"><span class="value-num">IA</span><span class="value-lbl">Guía al cliente</span></div>
-      <div class="value-chip"><span class="value-num">POS</span><span class="value-lbl">Redirección lista</span></div>
-    </div>
-
-    <!-- Index divider -->
-    <div class="index-label">
-      <div class="index-label-line"></div>
-      <div class="index-label-text">¿Qué deseas explorar?</div>
-      <div class="index-label-line"></div>
-    </div>
-
-    <!-- Option cards -->
-    <div class="options-list">
-
-      <div class="opt-card" onclick="goPage('page-menu')">
-        <div class="opt-icon gold">🍽️</div>
-        <div class="opt-text">
-          <div class="opt-title">Ver el menú completo</div>
-          <div class="opt-desc">Todos los platos con precios, ingredientes y opciones para personalizar</div>
-        </div>
-        <span class="opt-arrow">›</span>
+    <section class="section process-section" id="proceso">
+      <div class="section-heading">
+        <p class="eyebrow">Demo personalizada</p>
+        <h2>Del menú actual a una experiencia propia.</h2>
       </div>
-
-      <div class="opt-card" onclick="goPage('page-chef')">
-        <div class="opt-icon gold">👨‍🍳</div>
-        <div class="opt-text">
-          <div class="opt-title">Favoritos del chef</div>
-          <div class="opt-desc">Selección personal del Chef Marco para una primera visita perfecta</div>
-        </div>
-        <span class="opt-arrow">›</span>
+      <div class="process-grid">
+        <div><span>01</span><h3>Compartes tu menú</h3><p>Carta, logo, colores, fotografías y flujo actual.</p></div>
+        <div><span>02</span><h3>Preparamos la demo</h3><p>Organizamos platos, recomendaciones y una dirección visual propia.</p></div>
+        <div><span>03</span><h3>La pruebas con tu equipo</h3><p>Validamos la experiencia antes de hablar de una implementación.</p></div>
       </div>
+    </section>
 
-      <div class="opt-card" onclick="goPage('page-popular')">
-        <div class="opt-icon orange">🔥</div>
-        <div class="opt-text">
-          <div class="opt-title">Los más pedidos</div>
-          <div class="opt-desc">Los platos que nuestros comensales eligen una y otra vez esta semana</div>
-        </div>
-        <span class="opt-arrow">›</span>
-      </div>
-
-      <div class="opt-card" onclick="goPage('page-rec')">
-        <div class="opt-icon blue">✨</div>
-        <div class="opt-text">
-          <div class="opt-title">No sé qué pedir</div>
-          <div class="opt-desc">4 preguntas y te recomendamos el plato perfecto para ti</div>
-        </div>
-        <span class="opt-arrow">›</span>
-      </div>
-
-    </div>
-
-    <div class="flow-card">
-      <div class="flow-title">Flujo que el cliente entiende en segundos</div>
-      <div class="flow-steps">
-        <div class="flow-step"><b>1</b><span>Explora platos visuales</span></div>
-        <div class="flow-step"><b>2</b><span>Personaliza y agrega</span></div>
-        <div class="flow-step"><b>3</b><span>Continúa al sistema actual</span></div>
-      </div>
-    </div>
-
-    <!-- Tarjeta Dishly visible — versión pitch/presentación -->
-    <div class="options-list" style="padding-top:0;padding-bottom:0">
-      <div class="opt-card" onclick="goPage('page-biz')" style="border-color:rgba(160,100,224,.28);background:linear-gradient(135deg,rgba(160,100,224,.07),rgba(160,100,224,.02))">
-        <div class="opt-icon purple">🏢</div>
-        <div class="opt-text">
-          <div class="opt-title">¿Tienes un restaurante?</div>
-          <div class="opt-desc">Descubre cómo Dishly puede transformar tu experiencia de menú</div>
-        </div>
-        <span class="opt-arrow">›</span>
-      </div>
-    </div>
-
-    <!-- Footer pitch destacado -->
-    <div style="margin:14px 16px 28px;background:linear-gradient(135deg,rgba(201,169,110,.1),rgba(201,169,110,.04));border:1px solid var(--bdr);border-radius:var(--rxl);padding:18px 20px;display:flex;align-items:center;gap:14px">
-      <span style="font-size:24px">⚡</span>
+    <section class="final-cta">
+      <p class="eyebrow">Siguiente paso</p>
+      <h2>¿Cómo se vería Dishly con tu restaurante?</h2>
+      <p>Preparamos una demostración local con tu carta y tu identidad, sin conectar sistemas reales.</p>
       <div>
-        <div style="font-size:12px;font-weight:800;color:var(--gold);letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px">Powered by Dishly</div>
-        <div style="font-size:11px;color:var(--t2);line-height:1.5">Menú QR interactivo · Recomendaciones IA · Conexión al POS del restaurante</div>
+        <button class="button button-primary" type="button" data-open-contact>Solicitar demo personalizada</button>
+        <button class="button button-ghost" type="button" data-open-contact>Hablar con Dishly</button>
       </div>
-    </div>
+    </section>
+  </main>
 
-  </div><!-- /page-index -->
+  <footer class="site-footer">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">D</span><span>Dishly</span></div>
+    <p>Menús interactivos para restaurantes.</p>
+    <a href="menu.html">Abrir Casa Marea</a>
+  </footer>
 
-  <!-- ══════════ PAGE: MENÚ ══════════ -->
-  <div class="page hidden" id="page-menu">
-    <div class="page-header">
-      <div class="page-lbl">🍽️ Nuestra carta</div>
-      <div class="page-title">El menú completo</div>
-      <div class="page-sub">Cocina mediterránea · fusión moderna · ingredientes de temporada</div>
-    </div>
-    <div class="cats">
-      <div class="cats-inner" id="cats-inner">
-        <div class="cat on" data-cat="todos">🌟 Todos</div>
-        <div class="cat" data-cat="entradas">🥗 Entradas</div>
-        <div class="cat" data-cat="principales">🍽️ Principales</div>
-        <div class="cat" data-cat="mariscos">🦞 Mariscos</div>
-        <div class="cat" data-cat="carnes">🥩 Carnes</div>
-        <div class="cat" data-cat="vegetariano">🌿 Vegetariano</div>
-        <div class="cat" data-cat="bebidas">🍷 Bebidas</div>
-        <div class="cat" data-cat="postres">🍮 Postres</div>
+  <div class="modal-overlay" id="contact-modal" hidden>
+    <section class="dialog contact-dialog" role="dialog" aria-modal="true" aria-labelledby="contact-title">
+      <button class="icon-button dialog-close" type="button" data-close-contact aria-label="Cerrar formulario">×</button>
+      <p class="eyebrow">Demo personalizada</p>
+      <h2 id="contact-title">Cuéntanos sobre el restaurante.</h2>
+      <p class="dialog-intro">Este formulario funciona localmente para la demostración. No envía información porque todavía no existe un destino de contacto configurado.</p>
+      <form id="contact-form" novalidate>
+        <div class="form-grid">
+          <label>Nombre del restaurante<input name="restaurant" required autocomplete="organization"></label>
+          <label>Nombre del contacto<input name="contact" required autocomplete="name"></label>
+          <label>Correo<input name="email" type="email" required autocomplete="email"></label>
+          <label>Teléfono opcional<input name="phone" type="tel" autocomplete="tel"></label>
+          <label>Número de ubicaciones<input name="locations" type="number" min="1" value="1" required></label>
+          <label>POS utilizado<input name="pos" placeholder="Ej. Toast, Square, otro"></label>
+        </div>
+        <label>Enlace al menú actual<input name="menuUrl" type="url" placeholder="https://"></label>
+        <label>Mensaje<textarea name="message" rows="4" placeholder="Cuéntanos qué te gustaría mostrar en la demo"></textarea></label>
+        <p class="form-error" id="contact-error" role="alert"></p>
+        <button class="button button-primary button-full" type="submit">Preparar solicitud de demostración</button>
+      </form>
+      <div class="form-success" id="contact-success" hidden>
+        <span aria-hidden="true">✓</span>
+        <h3>Solicitud preparada localmente</h3>
+        <p>No se ha enviado información. Antes de producción debe configurarse un correo, CRM o agenda real.</p>
+        <button class="button button-dark" type="button" data-close-contact>Cerrar</button>
       </div>
-    </div>
-    <div class="dishes" id="dishes-grid"></div>
+    </section>
   </div>
 
-  <!-- ══════════ PAGE: CHEF ══════════ -->
-  <div class="page hidden" id="page-chef">
-    <div class="page-header">
-      <div class="page-lbl">👨‍🍳 Selección especial</div>
-      <div class="page-title">Favoritos del chef</div>
-      <div class="page-sub">Seleccionados por el Chef Marco para una primera visita perfecta.</div>
-    </div>
-    <div class="chef-banner">
-      <div class="chef-ava">👨‍🍳</div>
-      <div>
-        <div class="chef-nm">Chef Marco Herrera</div>
-        <div class="chef-msg">"Técnica europea, alma mediterránea y sabor latino sin disculpas."</div>
-      </div>
-    </div>
-    <div class="chef-dishes" id="chef-list"></div>
-  </div>
-
-  <!-- ══════════ PAGE: POPULAR ══════════ -->
-  <div class="page hidden" id="page-popular">
-    <div class="page-header">
-      <div class="page-lbl">🔥 Tendencias</div>
-      <div class="page-title">Los más pedidos</div>
-      <div class="page-sub">Platos que nuestros comensales eligen una y otra vez esta semana.</div>
-    </div>
-    <div class="popular-grid" id="pop-grid"></div>
-  </div>
-
-  <!-- ══════════ PAGE: RECOMENDACIÓN ══════════ -->
-  <div class="page hidden" id="page-rec">
-    <div class="page-header">
-      <div class="page-lbl">✨ Dishly AI</div>
-      <div class="page-title">No sé qué pedir</div>
-      <div class="page-sub">Cuatro preguntas, una recomendación perfecta para ti.</div>
-    </div>
-    <div class="rec-wrap">
-
-      <div class="rec-intro">
-        <span class="rec-intro-ic">🎯</span>
-        <div class="rec-intro-title">Tu plato ideal en 4 pasos</div>
-        <div class="rec-intro-sub">Cuéntanos qué te apetece y encontramos el plato perfecto según tus preferencias.</div>
-      </div>
-
-      <div class="rec-prog" id="rec-prog">
-        <div class="rec-dot" id="dot-0"></div>
-        <div class="rec-dot" id="dot-1"></div>
-        <div class="rec-dot" id="dot-2"></div>
-        <div class="rec-dot" id="dot-3"></div>
-      </div>
-
-      <div class="rec-step on" id="rs-0">
-        <div class="rec-q">¿Qué prefieres hoy?</div>
-        <div class="rec-hint">El estado de ánimo de tu paladar</div>
-        <div class="opts">
-          <button class="opt-btn" data-key="mood" data-val="ligero"     onclick="selectOpt(this)"><span class="opt-ic">🥗</span><span class="opt-lb">Algo ligero</span></button>
-          <button class="opt-btn" data-key="mood" data-val="fuerte"     onclick="selectOpt(this)"><span class="opt-ic">💪</span><span class="opt-lb">Algo fuerte</span></button>
-          <button class="opt-btn" data-key="mood" data-val="fresco"     onclick="selectOpt(this)"><span class="opt-ic">🌿</span><span class="opt-lb">Algo fresco</span></button>
-          <button class="opt-btn" data-key="mood" data-val="indulgente" onclick="selectOpt(this)"><span class="opt-ic">✨</span><span class="opt-lb">Indulgente</span></button>
-        </div>
-        <div class="rec-nav"><button class="btn-next" onclick="recNext(1)">Siguiente →</button></div>
-      </div>
-
-      <div class="rec-step" id="rs-1">
-        <div class="rec-q">¿Proteína principal?</div>
-        <div class="rec-hint">Para afinar tu recomendación</div>
-        <div class="opts">
-          <button class="opt-btn" data-key="protein" data-val="carne"       onclick="selectOpt(this)"><span class="opt-ic">🥩</span><span class="opt-lb">Carne</span></button>
-          <button class="opt-btn" data-key="protein" data-val="mariscos"    onclick="selectOpt(this)"><span class="opt-ic">🦞</span><span class="opt-lb">Mariscos</span></button>
-          <button class="opt-btn" data-key="protein" data-val="pollo"       onclick="selectOpt(this)"><span class="opt-ic">🍗</span><span class="opt-lb">Pollo</span></button>
-          <button class="opt-btn" data-key="protein" data-val="vegetariano" onclick="selectOpt(this)"><span class="opt-ic">🌱</span><span class="opt-lb">Vegetariano</span></button>
-        </div>
-        <div class="rec-nav">
-          <button class="btn-back-rec" onclick="recBack(0)">← Atrás</button>
-          <button class="btn-next" onclick="recNext(2)">Siguiente →</button>
-        </div>
-      </div>
-
-      <div class="rec-step" id="rs-2">
-        <div class="rec-q">¿Tienes alergias?</div>
-        <div class="rec-hint" style="display:flex;align-items:center;gap:6px">
-          <span style="font-size:13px">⚠️</span>
-          Filtro de seguridad — obligatorio responder
-        </div>
-        <div class="opts" style="grid-template-columns:1fr 1fr 1fr">
-          <button class="opt-btn" data-key="allergy" data-val="gluten"   onclick="selectMulti(this);clearAllergyError()"><span class="opt-ic">🌾</span><span class="opt-lb">Gluten</span></button>
-          <button class="opt-btn" data-key="allergy" data-val="lacteos"  onclick="selectMulti(this);clearAllergyError()"><span class="opt-ic">🧀</span><span class="opt-lb">Lácteos</span></button>
-          <button class="opt-btn" data-key="allergy" data-val="mariscos" onclick="selectMulti(this);clearAllergyError()"><span class="opt-ic">🦐</span><span class="opt-lb">Mariscos</span></button>
-          <button class="opt-btn" data-key="allergy" data-val="huevo"    onclick="selectMulti(this);clearAllergyError()"><span class="opt-ic">🥚</span><span class="opt-lb">Huevo</span></button>
-          <button class="opt-btn" data-key="allergy" data-val="frutos"   onclick="selectMulti(this);clearAllergyError()"><span class="opt-ic">🥜</span><span class="opt-lb">Frutos secos</span></button>
-          <button class="opt-btn" data-key="allergy" data-val="soja"     onclick="selectMulti(this);clearAllergyError()"><span class="opt-ic">🫘</span><span class="opt-lb">Soja</span></button>
-        </div>
-        <div style="margin-top:10px;position:relative">
-          <input type="text" id="allergy-custom"
-            placeholder="Otra alergia no listada (escríbela aquí)"
-            oninput="onAllergyCustomInput()"
-            style="width:100%;background:var(--card);border:1px solid var(--bdr-s);border-radius:var(--rmd);
-                   padding:12px 14px;font-size:13px;color:var(--t1);font-family:inherit;
-                   outline:none;transition:border-color .18s"
-            onfocus="this.style.borderColor='var(--gold)'"
-            onblur="this.style.borderColor='var(--bdr-s)'">
-        </div>
-        <button class="opt-btn" data-key="allergy" data-val="ninguna"
-          onclick="selectAllergyNinguna(this)"
-          style="margin-top:9px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px">
-          <span class="opt-ic" style="font-size:18px;margin:0">✅</span>
-          <span class="opt-lb">No tengo ninguna alergia</span>
-        </button>
-        <div id="allergy-error"
-          style="display:none;background:rgba(224,92,92,.1);border:1px solid rgba(224,92,92,.3);
-                 border-radius:var(--rmd);padding:11px 14px;margin-top:10px;
-                 font-size:12px;color:var(--red);align-items:center;gap:8px">
-          ⚠️ Por favor, indica si tienes alergias antes de continuar. Es un filtro de seguridad.
-        </div>
-        <div class="rec-nav" style="margin-top:14px">
-          <button class="btn-back-rec" onclick="recBack(1)">← Atrás</button>
-          <button class="btn-next" onclick="validateAllergyAndNext()">Siguiente →</button>
-        </div>
-      </div>
-
-      <div class="rec-step" id="rs-3">
-        <div class="rec-q">¿Te gusta el picante?</div>
-        <div class="rec-hint">Ajustamos la recomendación a tu gusto</div>
-        <div class="opts">
-          <button class="opt-btn" data-key="spice" data-val="no"   onclick="selectOpt(this)"><span class="opt-ic">😌</span><span class="opt-lb">Sin picante</span></button>
-          <button class="opt-btn" data-key="spice" data-val="medio" onclick="selectOpt(this)"><span class="opt-ic">🌶️</span><span class="opt-lb">Medio</span></button>
-          <button class="opt-btn" data-key="spice" data-val="alto"  onclick="selectOpt(this)"><span class="opt-ic">🔥</span><span class="opt-lb">Alto</span></button>
-        </div>
-        <div class="rec-nav">
-          <button class="btn-back-rec" onclick="recBack(2)">← Atrás</button>
-          <button class="btn-next" onclick="showResults()">Ver mi recomendación ✨</button>
-        </div>
-      </div>
-
-      <div class="rec-results" id="rec-results">
-        <div class="res-hdr">
-          <span class="res-em">🎯</span>
-          <div class="res-ttl">Tu recomendación</div>
-          <div class="res-sub">Basado en tus preferencias y restricciones:</div>
-        </div>
-        <div id="results-ideal" style="margin-bottom:6px"></div>
-        <div id="results-alt-wrap" style="display:none">
-          <div style="display:flex;align-items:center;gap:10px;margin:18px 0 12px">
-            <div style="flex:1;height:1px;background:var(--bdr-s)"></div>
-            <span style="font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;white-space:nowrap">También podrías disfrutar</span>
-            <div style="flex:1;height:1px;background:var(--bdr-s)"></div>
-          </div>
-          <div id="results-alt"></div>
-        </div>
-        <button class="btn-retry" onclick="resetRec()">↩ Volver a intentar</button>
-      </div>
-
-    </div>
-  </div><!-- /page-rec -->
-
-  <!-- ══════════ PAGE: DISHLY (pitch comercial) ══════════ -->
-  <div class="page hidden" id="page-biz">
-
-    <!-- Hero comercial -->
-    <div class="biz-hero">
-      <div class="biz-hero-badge">Menú QR · Recomendaciones · POS-ready</div>
-      <div class="biz-hero-title">Convierte tu menú QR en una experiencia que vende mejor</div>
-      <div class="biz-hero-sub">Dishly ayuda a restaurantes a presentar sus platos de forma visual, guiar al cliente al ordenar y conectar el menú con el sistema que ya usan.</div>
-      <button class="btn-primary" style="max-width:280px;margin:0 auto" onclick="bizToast()">Solicitar demo personalizada</button>
-    </div>
-
-    <div class="biz-content" style="padding-bottom:0">
-
-      <!-- El problema -->
-      <div class="pitch-block">
-        <div class="pitch-label">El problema</div>
-        <div class="pitch-title">El problema con muchos menús QR</div>
-        <div class="prob-list">
-          <div class="prob-item"><span class="prob-icon">📄</span><span class="prob-text">Muchos solo abren un PDF difícil de leer en el celular.</span></div>
-          <div class="prob-item"><span class="prob-icon">🤷</span><span class="prob-text">El cliente no siempre sabe qué pedir, y el menú no lo ayuda.</span></div>
-          <div class="prob-item"><span class="prob-icon">👁️</span><span class="prob-text">Los platos clave no se destacan frente a opciones menos rentables.</span></div>
-          <div class="prob-item"><span class="prob-icon">❌</span><span class="prob-text">El menú no siempre refleja qué productos están agotados.</span></div>
-        </div>
-      </div>
-
-      <div class="pitch-divider"></div>
-
-      <!-- La solución -->
-      <div class="pitch-block">
-        <div class="pitch-label">La solución</div>
-        <div class="pitch-title">La solución Dishly</div>
-        <p class="pitch-text">Dishly transforma el menú QR en una experiencia visual e interactiva. El cliente puede explorar platos por categoría, recibir recomendaciones personalizadas, revisar ingredientes y alérgenos, y avanzar hacia el sistema de pedido o pago del restaurante — sin fricciones y sin descargar nada.</p>
-        <div class="impact-grid">
-          <div class="impact-card">
-            <div class="impact-num">+ claro</div>
-            <div class="impact-title">Decisión más rápida</div>
-            <div class="impact-copy">Fotos, etiquetas, disponibilidad y recomendaciones reducen dudas antes de ordenar.</div>
-          </div>
-          <div class="impact-card">
-            <div class="impact-num">+ visible</div>
-            <div class="impact-title">Platos rentables</div>
-            <div class="impact-copy">Favoritos, populares y sugerencias ayudan a destacar lo que el restaurante quiere vender.</div>
-          </div>
-          <div class="impact-card">
-            <div class="impact-num">+ seguro</div>
-            <div class="impact-title">Alérgenos visibles</div>
-            <div class="impact-copy">Ingredientes y alertas aparecen antes del pedido, sin depender solo del mesero.</div>
-          </div>
-          <div class="impact-card">
-            <div class="impact-num">+ flexible</div>
-            <div class="impact-title">Sin reemplazar POS</div>
-            <div class="impact-copy">Dishly puede terminar en POS, pago, WhatsApp, formulario o flujo existente.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="pitch-divider"></div>
-
-      <!-- Qué ve el cliente -->
-      <div class="pitch-block">
-        <div class="pitch-label">Para el cliente final</div>
-        <div class="pitch-title">Qué ve el cliente</div>
-        <div class="feature-wrap">
-          <span class="ftag active">Menú por categorías</span>
-          <span class="ftag active">Detalle de platos</span>
-          <span class="ftag active">Ingredientes</span>
-          <span class="ftag active">Alérgenos</span>
-          <span class="ftag active">Recomendaciones</span>
-          <span class="ftag active">Favoritos del chef</span>
-          <span class="ftag active">Platos populares</span>
-          <span class="ftag active">Carrito</span>
-          <span class="ftag active">Redirección al sistema del restaurante</span>
-        </div>
-      </div>
-
-      <div class="pitch-divider"></div>
-
-      <!-- Qué controla el restaurante -->
-      <div class="pitch-block">
-        <div class="pitch-label">Para el dueño del restaurante</div>
-        <div class="pitch-title">Qué controla el restaurante</div>
-        <div class="feature-wrap">
-          <span class="ftag">Platos y precios</span>
-          <span class="ftag">Categorías</span>
-          <span class="ftag">Disponibilidad</span>
-          <span class="ftag">Productos agotados</span>
-          <span class="ftag">Platos destacados</span>
-          <span class="ftag">Promociones</span>
-          <span class="ftag">Idiomas</span>
-          <span class="ftag">Alérgenos</span>
-          <span class="ftag">Flujo de redirección</span>
-          <span class="ftag">Analytics según plan</span>
-        </div>
-        <div class="operator-panel">
-          <div class="operator-row">
-            <span class="operator-label">Estado del menú</span>
-            <span class="operator-value">Activo · Mesa 12</span>
-          </div>
-          <div class="operator-row">
-            <span class="operator-label">Platos destacados</span>
-            <span class="operator-value">Chef + Populares</span>
-          </div>
-          <div class="operator-row">
-            <span class="operator-label">Destino del pedido</span>
-            <span class="operator-value">POS / WhatsApp / Pago</span>
-          </div>
-          <div class="operator-row">
-            <span class="operator-label">Señales medibles</span>
-            <span class="operator-value">Clicks, carrito, interés</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="pitch-divider"></div>
-
-      <!-- Integración -->
-      <div class="pitch-block">
-        <div class="pitch-label">Integración</div>
-        <div class="pitch-title">No reemplaza tu sistema: lo complementa</div>
-        <p class="pitch-text">Dishly puede funcionar como una capa visual encima del flujo actual del restaurante. Puede redirigir al POS, sistema de pago, página de orden, WhatsApp, formulario o cualquier flujo que el restaurante ya utilice.</p>
-        <div class="integration-note"><strong>Nota sobre esta demo:</strong> El botón final simula una redirección. En una implementación real, se configuraría según el sistema y las necesidades del restaurante.</div>
-      </div>
-
-      <div class="pitch-divider"></div>
-
-      <!-- Beneficios -->
-      <div class="pitch-block">
-        <div class="pitch-label">Beneficios</div>
-        <div class="pitch-title">Beneficios principales</div>
-        <div class="benefit-list">
-          <div class="benefit-item">
-            <span class="benefit-ic">✓</span>
-            <div><div class="benefit-text">Mejor experiencia del cliente</div><div class="benefit-sub">El menú visual facilita la exploración y puede reducir la fricción al ordenar.</div></div>
-          </div>
-          <div class="benefit-item">
-            <span class="benefit-ic">✓</span>
-            <div><div class="benefit-text">Menos fricción al ordenar</div><div class="benefit-sub">El flujo guiado hace más visible qué pedir, incluso en la primera visita.</div></div>
-          </div>
-          <div class="benefit-item">
-            <span class="benefit-ic">✓</span>
-            <div><div class="benefit-text">Mayor visibilidad de platos clave</div><div class="benefit-sub">Permite destacar los platos que el restaurante quiere priorizar.</div></div>
-          </div>
-          <div class="benefit-item">
-            <span class="benefit-ic">✓</span>
-            <div><div class="benefit-text">Mejor manejo de disponibilidad</div><div class="benefit-sub">El cliente ve en tiempo real qué está disponible y qué no.</div></div>
-          </div>
-          <div class="benefit-item">
-            <span class="benefit-ic">✓</span>
-            <div><div class="benefit-text">Más confianza con alérgenos visibles</div><div class="benefit-sub">Los ingredientes y alérgenos visibles generan confianza antes de ordenar.</div></div>
-          </div>
-          <div class="benefit-item">
-            <span class="benefit-ic">✓</span>
-            <div><div class="benefit-text">Datos útiles sobre interés en platos</div><div class="benefit-sub">Analytics que pueden ayudar a entender qué platos generan más atención.</div></div>
-          </div>
-        </div>
-        <div class="integration-note" style="background:rgba(201,169,110,.05);border-color:rgba(201,169,110,.18)">Dishly puede ayudar, facilita y hace más visible — los resultados dependen del restaurante, el menú y el contexto operativo de cada negocio.</div>
-      </div>
-
-      <div class="pitch-divider"></div>
-
-      <!-- Niveles -->
-      <div class="pitch-block">
-        <div class="pitch-label">Planes disponibles</div>
-        <div class="pitch-title">Niveles disponibles</div>
-        <p class="pitch-text">Sin precios publicados — cada implementación se cotiza según el restaurante, el volumen y los requerimientos específicos.</p>
-        <div class="levels-wrap">
-          <div class="level-card">
-            <div class="level-hdr">
-              <div class="level-name">Base</div>
-              <span class="level-badge-tag lbt-base">Punto de entrada</span>
-            </div>
-            <div class="level-items">
-              <div class="level-item">Menú QR visual</div>
-              <div class="level-item">Categorías y detalle de platos</div>
-              <div class="level-item">Ingredientes y alérgenos</div>
-              <div class="level-item">Actualización básica de contenido</div>
-              <div class="level-item">Redirección simple al sistema del restaurante</div>
-            </div>
-          </div>
-          <div class="level-card featured">
-            <div class="level-hdr">
-              <div class="level-name">Pro</div>
-              <span class="level-badge-tag lbt-pro">Recomendado</span>
-            </div>
-            <div class="level-items">
-              <div class="level-item">Todo lo del Base</div>
-              <div class="level-item">Recomendaciones guiadas</div>
-              <div class="level-item">Favoritos del chef y platos populares</div>
-              <div class="level-item">Gestión de disponibilidad y agotados</div>
-              <div class="level-item">Mejor flujo de redirección</div>
-            </div>
-          </div>
-          <div class="level-card">
-            <div class="level-hdr">
-              <div class="level-name">Premium</div>
-              <span class="level-badge-tag lbt-premium">Avanzado</span>
-            </div>
-            <div class="level-items">
-              <div class="level-item">Todo lo del Pro</div>
-              <div class="level-item">Analytics avanzados</div>
-              <div class="level-item">Promociones inteligentes</div>
-              <div class="level-item">Recomendaciones más personalizadas</div>
-              <div class="level-item">Múltiples ubicaciones</div>
-              <div class="level-item">Panel de gestión más completo</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="pitch-divider"></div>
-
-      <!-- Implementación -->
-      <div class="pitch-block">
-        <div class="pitch-label">Proceso</div>
-        <div class="pitch-title">Cómo se implementa</div>
-        <div class="steps-list">
-          <div class="step-item">
-            <div class="step-num">1</div>
-            <div class="step-text">El restaurante comparte su menú actual.</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">2</div>
-            <div class="step-text">Se configura la experiencia visual de Dishly con los colores, logo, platos y categorías del restaurante.</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">3</div>
-            <div class="step-text">Se conecta o redirige al sistema actual del restaurante (POS, pago, WhatsApp, formulario, etc.).</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">4</div>
-            <div class="step-text">El cliente escanea el QR y usa el menú — sin descargar nada.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="pitch-divider"></div>
-
-      <!-- Personalizable -->
-      <div class="pitch-block" style="padding-bottom:22px">
-        <div class="pitch-label">Flexibilidad</div>
-        <div class="pitch-title">Personalizable para cada restaurante</div>
-        <div class="feature-wrap">
-          <span class="ftag active">Logo propio</span>
-          <span class="ftag active">Colores de marca</span>
-          <span class="ftag active">Categorías personalizadas</span>
-          <span class="ftag active">Idiomas</span>
-          <span class="ftag active">Platos destacados</span>
-          <span class="ftag active">Promociones</span>
-          <span class="ftag active">Alérgenos</span>
-          <span class="ftag active">Disponibilidad</span>
-          <span class="ftag active">Flujo de pedido o pago</span>
-          <span class="ftag active">Múltiples ubicaciones</span>
-        </div>
-      </div>
-
-    </div><!-- /biz-content -->
-
-    <!-- CTA final -->
-    <div class="biz-final-cta">
-      <div class="biz-final-title">¿Quieres ver cómo se vería con tu restaurante?</div>
-      <div class="biz-final-sub">Podemos preparar una demo personalizada usando el estilo, menú y flujo actual de tu restaurante.</div>
-      <button class="btn-primary" onclick="bizToast()">Solicitar demo personalizada</button>
-      <button class="btn-secondary" onclick="bizToast()">💬 Hablar con Dishly</button>
-    </div>
-
-  </div><!-- /page-biz -->
-
-</div><!-- /app -->
-
-<!-- ══════════ MODAL ══════════ -->
-<div class="m-ov" id="m-ov" onclick="if(event.target===this)closeModal()">
-  <div class="m-sheet">
-    <div class="m-handle"></div>
-    <div class="m-d-img" id="m-img">
-      <button class="m-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="m-body">
-      <div class="m-meta"><div class="m-name" id="m-name"></div><div class="m-price" id="m-price"></div></div>
-      <div class="m-desc" id="m-desc"></div>
-      <div class="m-lbl">Ingredientes</div><div class="chips" id="m-ingredients"></div>
-      <div class="m-lbl">Alérgenos</div><div class="chips" id="m-allergens"></div>
-      <div class="m-pills" id="m-pills"></div>
-      <div class="m-lbl">Personaliza tu pedido</div>
-      <div class="c-opts" id="m-custom"></div>
-      <div class="pairing" id="m-pairing"></div>
-      <button class="btn-add-full" id="m-add-btn" onclick="addFromModal()">🛒 &nbsp;Agregar al pedido</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════ CART ══════════ -->
-<div class="cart-ov" id="cart-ov" onclick="if(event.target===this)closeCart()">
-  <div class="cart-draw">
-    <div class="cart-hdr">
-      <div class="cart-ttl">🛒 Tu pedido</div>
-      <div class="cart-x" onclick="closeCart()">✕</div>
-    </div>
-    <div id="cart-body"></div>
-  </div>
-</div>
-
-<!-- ══════════ PAYMENT ══════════ -->
-<div id="pay-screen">
-  <div class="pay-ic">🔗</div>
-  <div class="pay-ttl">Redirigiendo al sistema del restaurante…</div>
-  <p class="pay-tx">Tu pedido ha sido enviado a Casa Marea.<br>El personal lo procesará en instantes.</p>
-  <div class="pay-box"><strong>Nota:</strong> Dishly no procesa pagos. Redirige al sistema de cobro que el restaurante ya utiliza.</div>
-  <button class="btn-primary" style="max-width:260px;margin:0 auto" onclick="closePay()">← Volver al menú</button>
-</div>
-
-<div class="toast" id="toast-el"></div>
-
-<script>
-'use strict';
-
-/* ─── DATA ─────────────────────────── */
-const DISHES = [
-  { id:1,  name:'Branzino a la Parrilla',    price:34, cats:['principales','mariscos'],            desc:'Corvina mediterránea a las brasas con mantequilla de hierbas provenzales y limón Meyer confitado.',       long:'Branzino salvaje del Mediterráneo cocinado a la parrilla de carbón con técnica de mariposa. Terminado con mantequilla de hierbas provenzales, tiras de limón Meyer confitado y aceite de oliva prensado en frío. Sobre puré de coliflor ahumado.',     ingredients:['Branzino salvaje','Limón Meyer','Aceite de oliva virgen','Tomillo','Romero','Ajo negro','Puré de coliflor'], allergens:['Pescado'],                         spice:0, time:'22 min', tags:['chef','gf'],      avail:'available', chefFav:true,  popular:false, pairing:'Albariño Rías Baixas · Notas cítricas que elevan el pescado.',           customs:['Sin ajo negro','Extra limón','Sin mantequilla'],              bg:'linear-gradient(140deg,#0d3044 0%,#1a5a7a 55%,#0a2535 100%)', em:'🐟' },
-  { id:2,  name:'Risotto de Langosta',        price:39, cats:['principales','mariscos'],            desc:'Arroz carnaroli mantecado con bisque de langosta, medallón entero y aceite de trufa blanca.',             long:'Arroz carnaroli DOP cocinado en bisque de langosta reducido durante 4 horas, montado con parmigiano reggiano 36 meses y mantequilla de Normandía. Coronado con medallón de langosta del Atlántico y aceite de trufa blanca.',                          ingredients:['Arroz carnaroli','Langosta Atlántica','Bisque de langosta','Parmigiano 36m','Mantequilla Normandía','Trufa blanca'], allergens:['Mariscos','Lácteos'],             spice:0, time:'28 min', tags:['chef','pop'],     avail:'available', chefFav:true,  popular:true,  pairing:'Chardonnay Borgoña · Su untuosidad complementa el bisque.',              customs:['Sin trufa','Extra medallón (+$8)','Sin parmesano'],           bg:'linear-gradient(140deg,#3a1f00 0%,#7a4810 55%,#2a1500 100%)', em:'🦞' },
-  { id:3,  name:'Tacos de Short Rib',         price:24, cats:['principales','carnes'],              desc:'Short rib braseado 12h en mole oscuro, tortilla de maíz azul con salsa macha y cilantro fresco.',         long:'Costilla de res braseada 12 horas en mole oscuro de 38 ingredientes. Desmenuzada a mano en tortilla de maíz azul tostada al momento, aguacate crema, salsa macha artesanal y cebolla morada en escabeche.',                                             ingredients:['Short rib 72h','Tortilla maíz azul','Mole oscuro','Aguacate crema','Salsa macha','Cebolla morada'], allergens:['Gluten (tortilla)'],                              spice:2, time:'15 min', tags:['pop','hot'],      avail:'available', chefFav:false, popular:true,  pairing:'Mezcal Joven o Modelo Negra · El humo abraza el mole.',                  customs:['Sin salsa macha','Extra cebolla','Sin cilantro'],             bg:'linear-gradient(140deg,#2a0800 0%,#6a2010 55%,#1a0500 100%)', em:'🌮' },
-  { id:4,  name:'Burrata con Tomates Asados', price:18, cats:['entradas','vegetariano'],            desc:'Burrata fresca de Puglia sobre tomates cherry asados a fuego lento, pesto de albahaca y focaccia.',         long:'Burrata di Andria importada de Puglia, sobre cama de tomates cherry asados 90 minutos con ajo, tomillo y azúcar morena. Pesto de albahaca genovesa, piñones tostados y focaccia horneada cada mañana.',                                                  ingredients:['Burrata di Andria','Tomates cherry','Pesto albahaca','Piñones','Focaccia artesanal','Fleur de sel'], allergens:['Lácteos','Gluten','Nueces (piñones)'],              spice:0, time:'10 min', tags:['veg','new'],      avail:'available', chefFav:false, popular:false, pairing:'Prosecco DOC · La acidez equilibra la cremosidad de la burrata.',         customs:['Sin focaccia','Extra pesto','Sin piñones'],                   bg:'linear-gradient(140deg,#2a1a00 0%,#7a5020 55%,#3a2500 100%)', em:'🧀' },
-  { id:5,  name:'Pasta Trufada',              price:29, cats:['principales'],                       desc:'Tagliolini al huevo con crema de trufa negra Périgord, parmesano añejo y láminas frescas de temporada.',  long:'Tagliolini artesanal con huevo de campo y harina 00, salteado en crema sedosa de trufa negra Périgord. Parmigiano reggiano 24 meses rallado en mesa y láminas frescas de trufa de temporada.',                                                           ingredients:['Tagliolini de huevo','Trufa negra Périgord','Parmigiano 24m','Mantequilla','Crema'], allergens:['Gluten','Huevo','Lácteos'],                                    spice:0, time:'18 min', tags:['chef'],           avail:'last',      chefFav:false, popular:true,  pairing:'Barolo 2018 · El tanino envuelve la trufa con elegancia.',               customs:['Sin crema','Extra trufa (+$6)','Sin parmesano'],              bg:'linear-gradient(140deg,#1a1000 0%,#503010 55%,#0f0800 100%)', em:'🍝' },
-  { id:6,  name:'Salmón Miso Citrus',         price:31, cats:['principales','mariscos'],            desc:'Salmón atlántico marinado 48h en miso blanco y yuzu, a la parrilla con jengibre encurtido y ponzu.',       long:'Salmón atlántico marinado 48 horas en miso shiro, sake, mirin y yuzu. A la parrilla de piedra volcánica, sobre puré de edamame con encurtido de jengibre rosa y reducción de ponzu.',                                                                    ingredients:['Salmón atlántico','Miso shiro','Yuzu','Mirin','Edamame','Ponzu','Jengibre encurtido'], allergens:['Pescado','Soja'],                                              spice:1, time:'20 min', tags:['gf','pop'],      avail:'available', chefFav:true,  popular:true,  pairing:'Sauvignon Blanc Marlborough · Los cítricos amplifican el miso.',          customs:['Sin jengibre','Extra ponzu','Sin alga'],                      bg:'linear-gradient(140deg,#001a1a 0%,#10506a 55%,#001030 100%)', em:'🍣' },
-  { id:7,  name:'Bowl Mediterráneo',          price:22, cats:['principales','vegetariano','entradas'], desc:'Quinoa tricolor, garbanzos especiados, verduras asadas, hummus artesanal y tahini con menta.',          long:'Quinoa tricolor sobre hummus de garbanzo tunecino. Verduras de temporada asadas, garbanzos especiados con comino y pimentón, tabulé de perejil y tahini con menta fresca.',                                                                               ingredients:['Quinoa tricolor','Garbanzo','Hummus artesanal','Verduras asadas','Tahini','Menta','Tabulé'], allergens:['Sésamo (tahini)'],                                        spice:0, time:'12 min', tags:['veg','gf','new'], avail:'available', chefFav:false, popular:false, pairing:'Rosado de Provenza · Fresco y floral para equilibrar las especias.',      customs:['Sin tahini','Extra hummus','Sin garbanzos','Con feta (+$3)'], bg:'linear-gradient(140deg,#0a1a00 0%,#305020 55%,#0a1400 100%)', em:'🥗' },
-  { id:8,  name:'Tres Leches de Coco',        price:14, cats:['postres'],                           desc:'Bizcocho esponjoso en tres leches tropicales, crema chantilly y coco tostado caramelizado.',              long:'Bizcocho de vainilla empapado en leche de coco thai, leche condensada y crema de coco tostado. Cubierto con chantilly batida al momento y virutas de coco tostado caramelizado.',                                                                           ingredients:['Bizcocho de vainilla','Leche de coco thai','Leche condensada','Crema chantilly','Coco tostado'], allergens:['Huevo','Lácteos','Gluten'],                             spice:0, time:'8 min',  tags:['pop'],            avail:'available', chefFav:false, popular:true,  pairing:'Ron añejo o café espresso · El coco y el caramelo se vuelven memorables.',customs:['Sin coco tostado','Extra chantilly','Sin azúcar'],            bg:'linear-gradient(140deg,#2a1a00 0%,#8a6030 55%,#3a2800 100%)', em:'🍮' },
-  { id:9,  name:'Gazpacho de Verano',         price:16, cats:['entradas','vegetariano'],            desc:'Sopa fría de tomate heirloom, pepino persa, pimiento asado y jerez seco. Servida en copa helada.',        long:'Gazpacho de tomates heirloom de huerta propia, pepino persa, ajo negro, pimiento asado y jerez seco. Copa de cristal helada con brunoise de verduras y crutones de brioche.',                                                                              ingredients:['Tomate heirloom','Pepino persa','Pimiento asado','Ajo negro','Jerez seco','AOVE Hojiblanca'], allergens:['Gluten (crutones)'],                                      spice:0, time:'5 min',  tags:['veg','gf','pop'], avail:'available', chefFav:false, popular:false, pairing:'Manzanilla Sanlucar · La brisa marina hace eco en el jerez.',             customs:['Sin crutones','Sin ajo','Con aguacate (+$2)'],                bg:'linear-gradient(140deg,#2a0500 0%,#8a2010 55%,#1a0300 100%)', em:'🍅' },
-  { id:10, name:'Ribeye al Carbón',           price:52, cats:['principales','carnes'],              desc:'USDA Prime 28 días de maduración, a las brasas de mezquite. Papas fondant y chimichurri rojo.',           long:'Ribeye USDA Prime 28 días en seco, parrilla de mezquite. Sellado a fuego vivo, papas fondant al tomillo, espárragos y chimichurri rojo de la casa.',                                                                                                       ingredients:['Ribeye USDA Prime','Mezquite','Papas fondant','Espárragos','Chimichurri rojo','Mantequilla'], allergens:['Ninguno'],                                                spice:0, time:'30 min', tags:['chef','gf'],      avail:'sold',      chefFav:false, popular:true,  pairing:'Malbec Luján de Cuyo · Potencia que respeta al ribeye.',                customs:['Término: rojo','Término: tres cuartos','Término: bien cocido'], bg:'linear-gradient(140deg,#1a0000 0%,#600010 55%,#0f0000 100%)', em:'🥩' }
-];
-
-const DISH_IMAGES = {
-  1: 'https://loremflickr.com/cache/resized/65535_50159691497_ba42432742_b_900_700_nofilter.jpg',
-  2: 'https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=900&q=80',
-  3: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=900&q=80',
-  4: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&w=900&q=80',
-  5: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=900&q=80',
-  6: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=900&q=80',
-  7: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80',
-  8: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=900&q=80',
-  9: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80',
-  10:'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=900&q=80'
-};
-DISHES.forEach(d => { d.img = DISH_IMAGES[d.id] || ''; });
-
-function dishImageStyle(d, shade = .28) {
-  return d.img
-    ? `background-image:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,${shade})),url('${d.img}');background-color:#17151A`
-    : `background:${d.bg}`;
-}
-
-function dishImageMarkup(d, className, shade = .28) {
-  return `<div class="${className}" style="${dishImageStyle(d, shade)}"><span class="dish-emoji">${d.em}</span></div>`;
-}
-
-const TAGS  = { chef:['t-chef',"Chef's Pick"], pop:['t-pop','Popular'], hot:['t-hot','🌶 Picante'], gf:['t-gf','Sin gluten'], veg:['t-veg','Vegetariano'], new:['t-new','Nuevo'] };
-const AVAIL = { available:['av-ok','Disponible'], last:['av-last','Últimas unidades'], sold:['av-sold','Agotado'] };
-
-/* ─── STATE ─── */
-let cart = [], currentDish = null, lang = 'ES';
-let recPrefs = { mood:null, protein:null, allergy:[], spice:null, allergyCustom:'' };
-let currentStep = 0, currentPage = 'page-index';
-
-/* ─── PAGE NAVIGATION ─── */
-function goPage(id) {
-  const prev = document.getElementById(currentPage);
-  const next = document.getElementById(id);
-  prev.classList.remove('active');
-  prev.classList.add('hidden-left');
-  next.classList.remove('hidden', 'hidden-left');
-  next.classList.add('active');
-  next.scrollTop = 0;
-  currentPage = id;
-  // Show/hide back button
-  document.getElementById('hdr-back').classList.toggle('visible', id !== 'page-index');
-  // Reset rec flow when entering rec page
-  if (id === 'page-rec') resetRec();
-}
-
-function goIndex() {
-  if (currentPage === 'page-index') return;
-  const prev = document.getElementById(currentPage);
-  const idx  = document.getElementById('page-index');
-  prev.classList.remove('active');
-  prev.classList.add('hidden');
-  idx.classList.remove('hidden','hidden-left');
-  idx.classList.add('active');
-  idx.scrollTop = 0;
-  currentPage = 'page-index';
-  document.getElementById('hdr-back').classList.remove('visible');
-}
-
-/* ─── DISHES ─── */
-function buildDishCard(d) {
-  const [ac,al] = AVAIL[d.avail];
-  const tags = d.tags.map(k => { const [c,l]=TAGS[k]; return `<span class="dtag ${c}">${l}</span>`; }).join('');
-  const dis = d.avail==='sold' ? 'disabled' : '';
-  return `
-  <div class="dc${d.avail==='sold'?' sold':''}">
-    <div class="dc-img">
-      ${dishImageMarkup(d, 'dc-img-inner', .34)}
-      <div class="avail-badge ${ac}">${al}</div>
-    </div>
-    <div class="dc-body">
-      <div class="dc-tags">${tags}</div>
-      <div class="dc-name">${d.name}</div>
-      <div class="dc-desc">${d.desc}</div>
-      <div class="dc-foot">
-        <div class="dc-price">$${d.price}<sub> USD</sub></div>
-        <div class="dc-acts">
-          <button class="btn-ghost-sm" onclick="openModal(${d.id})">Detalles</button>
-          <button class="btn-gold-sm" id="add-${d.id}" onclick="addToCart(${d.id})" ${dis}>+ Agregar</button>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-function renderDishes(list) {
-  const g = document.getElementById('dishes-grid');
-  g.innerHTML = list.length
-    ? list.map(buildDishCard).join('')
-    : '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--t2)">No hay platos en esta categoría.</div>';
-}
-
-/* Category filter */
-document.getElementById('cats-inner').addEventListener('click', e => {
-  const chip = e.target.closest('.cat'); if (!chip) return;
-  document.querySelectorAll('.cat').forEach(c => c.classList.remove('on'));
-  chip.classList.add('on');
-  const cat = chip.dataset.cat;
-  renderDishes(cat==='todos' ? DISHES : DISHES.filter(d => d.cats.includes(cat)));
-});
-
-/* ─── CHEF & POPULAR ─── */
-function buildChefList() {
-  document.getElementById('chef-list').innerHTML = DISHES.filter(d => d.chefFav).map(d => `
-    <div class="chef-card" onclick="openModal(${d.id})">
-      ${dishImageMarkup(d, 'chef-card-img', .32)}
-      <div class="chef-card-body">
-        <div><div class="chef-card-name">${d.name}</div><div class="chef-card-desc">${d.desc}</div></div>
-        <div class="chef-card-foot">
-          <div class="chef-card-price">$${d.price}</div>
-          <button class="btn-gold-sm" onclick="event.stopPropagation();addToCart(${d.id})" ${d.avail==='sold'?'disabled':''}>+ Agregar</button>
-        </div>
-      </div>
-    </div>`).join('');
-}
-function buildPopGrid() {
-  document.getElementById('pop-grid').innerHTML = DISHES.filter(d => d.popular).map((d,i) => `
-    <div class="pop-card" onclick="openModal(${d.id})">
-      ${dishImageMarkup(d, 'pop-img', .32)}
-      <div class="pop-body">
-        <div class="pop-rank">#${i+1} más pedido</div>
-        <div class="pop-name">${d.name}</div>
-        <div class="pop-price">$${d.price}</div>
-        <button class="pop-add" onclick="event.stopPropagation();addToCart(${d.id})" ${d.avail==='sold'?'disabled':''}>+ Agregar</button>
-      </div>
-    </div>`).join('');
-}
-
-/* ─── MODAL ─── */
-function openModal(id) {
-  currentDish = DISHES.find(d => d.id===id);
-  const d = currentDish;
-  const img = document.getElementById('m-img');
-  img.setAttribute('style', dishImageStyle(d, .38));
-  const es = img.querySelector('.dish-emoji'); if (es) es.remove();
-  const sp = document.createElement('span');
-  sp.className='dish-emoji';
-  sp.textContent = d.em;
-  img.insertBefore(sp, img.firstChild);
-  document.getElementById('m-name').textContent  = d.name;
-  document.getElementById('m-price').textContent = `$${d.price}`;
-  document.getElementById('m-desc').textContent  = d.long;
-  document.getElementById('m-ingredients').innerHTML = d.ingredients.map(x=>`<span class="chip">${x}</span>`).join('');
-  document.getElementById('m-allergens').innerHTML   = d.allergens.map(x=>`<span class="chip alg">⚠️ ${x}</span>`).join('');
-  const sl = ['Sin picante','🌶 Leve','🌶🌶 Medio','🌶🌶🌶 Fuerte'][d.spice]||'—';
-  document.getElementById('m-pills').innerHTML = `
-    <div class="mpill"><div class="mpill-lbl">Tiempo</div><div class="mpill-val">${d.time}</div></div>
-    <div class="mpill"><div class="mpill-lbl">Picante</div><div class="mpill-val">${sl}</div></div>
-    <div class="mpill"><div class="mpill-lbl">Precio</div><div class="mpill-val">$${d.price}</div></div>`;
-  document.getElementById('m-custom').innerHTML = d.customs.map(c=>`
-    <label class="c-opt"><input type="checkbox" value="${c}"><span class="c-opt-lbl">${c}</span></label>`).join('');
-  document.getElementById('m-pairing').innerHTML = `
-    <div class="pairing-lbl">✦ Maridaje recomendado</div>
-    <div class="pairing-txt">${d.pairing}</div>`;
-  const ab = document.getElementById('m-add-btn');
-  ab.disabled = d.avail==='sold';
-  ab.textContent = d.avail==='sold' ? 'Plato no disponible' : '🛒  Agregar al pedido';
-  document.getElementById('m-ov').classList.add('on');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal() {
-  document.getElementById('m-ov').classList.remove('on');
-  document.body.style.overflow = '';
-}
-function addFromModal() { if(currentDish) addToCart(currentDish.id); closeModal(); }
-
-/* ─── CART ─── */
-function addToCart(id) {
-  const d = DISHES.find(x=>x.id===id); if(!d||d.avail==='sold') return;
-  const ex = cart.find(x=>x.id===id);
-  ex ? ex.qty++ : cart.push({id:d.id,name:d.name,price:d.price,em:d.em,img:d.img,bg:d.bg,qty:1});
-  updateBadge();
-  const b = document.getElementById('add-'+id);
-  if (b) { b.classList.add('pulse'); setTimeout(()=>b.classList.remove('pulse'),400); }
-  toast(`${d.em} ${d.name} agregado`);
-}
-function updateBadge() {
-  const n = cart.reduce((s,x)=>s+x.qty,0);
-  const badge = document.getElementById('cart-badge');
-  badge.textContent = n;
-  badge.classList.toggle('on', n>0);
-}
-function openCart() { renderCart(); document.getElementById('cart-ov').classList.add('on'); document.body.style.overflow='hidden'; }
-function closeCart(){ document.getElementById('cart-ov').classList.remove('on'); document.body.style.overflow=''; }
-function changeQty(id,d) {
-  const it = cart.find(x=>x.id===id); if(!it) return;
-  it.qty+=d; if(it.qty<=0) cart=cart.filter(x=>x.id!==id);
-  updateBadge(); renderCart();
-}
-function renderCart() {
-  const body = document.getElementById('cart-body');
-  if (!cart.length) { body.innerHTML=`<div class="cart-empty-wrap"><span class="cart-empty-ic">🛒</span><div class="cart-empty-tx">Tu pedido está vacío.</div></div>`; return; }
-  const sub = cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const tax = +(sub*.08).toFixed(2), tot = +(sub+tax).toFixed(2);
-  body.innerHTML = `
-    <div class="cart-items">${cart.map(x=>`
-      <div class="ci">
-        <div class="ci-img" style="${dishImageStyle(x, .34)}"><span class="dish-emoji">${x.em}</span></div>
-        <div class="ci-info"><div class="ci-nm">${x.name}</div><div class="ci-pr">$${(x.price*x.qty).toFixed(2)}</div></div>
-        <div class="ci-qty">
-          <button class="qty-btn" onclick="changeQty(${x.id},-1)">−</button>
-          <span class="qty-n">${x.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${x.id},+1)">+</button>
-        </div>
-      </div>`).join('')}
-    </div>
-    <div class="cart-sum">
-      <div class="csum-row"><span>Subtotal</span><span>$${sub.toFixed(2)}</span></div>
-      <div class="csum-row"><span>Impuestos (8%)</span><span>$${tax}</span></div>
-      <div class="csum-row tot"><span>Total estimado</span><span>$${tot}</span></div>
-    </div>
-    <button class="btn-checkout" onclick="checkout()">🔗 Continuar al pago del restaurante</button>
-    <div class="cart-disc">Dishly redirige al sistema de pago del restaurante. No procesa pagos internamente.</div>`;
-}
-function checkout() { closeCart(); document.getElementById('pay-screen').classList.add('on'); }
-function closePay()  { document.getElementById('pay-screen').classList.remove('on'); cart=[]; updateBadge(); }
-
-/* ─── RECOMMENDATION ─── */
-function resetRec() {
-  recPrefs = {mood:null,protein:null,allergy:[],spice:null,allergyCustom:''};
-  currentStep = 0;
-  document.querySelectorAll('.rec-step').forEach((s,i)=>s.classList.toggle('on',i===0));
-  document.getElementById('rec-results').classList.remove('on');
-  document.querySelectorAll('.opt-btn').forEach(o=>o.classList.remove('on'));
-  for(let i=0;i<4;i++) document.getElementById('dot-'+i).classList.remove('done');
-  const ci = document.getElementById('allergy-custom');
-  if(ci) ci.value = '';
-  clearAllergyError();
-}
-function updateDots(n) { for(let i=0;i<4;i++) document.getElementById('dot-'+i).classList.toggle('done',i<n); }
-function selectOpt(b) {
-  const k=b.dataset.key;
-  document.querySelectorAll(`.opt-btn[data-key="${k}"]`).forEach(o=>o.classList.remove('on'));
-  b.classList.add('on');
-  if(k==='mood')    recPrefs.mood=b.dataset.val;
-  if(k==='protein') recPrefs.protein=b.dataset.val;
-  if(k==='spice')   recPrefs.spice=b.dataset.val;
-  if(k==='allergy') recPrefs.allergy=[b.dataset.val];
-}
-function selectMulti(b) {
-  const v=b.dataset.val;
-  document.querySelector('.opt-btn[data-key="allergy"][data-val="ninguna"]')?.classList.remove('on');
-  recPrefs.allergy = recPrefs.allergy.filter(a=>a!=='ninguna');
-  b.classList.toggle('on');
-  recPrefs.allergy = b.classList.contains('on')
-    ? [...recPrefs.allergy, v]
-    : recPrefs.allergy.filter(a=>a!==v);
-}
-function selectAllergyNinguna(b) {
-  document.querySelectorAll('.opt-btn[data-key="allergy"]').forEach(o=>o.classList.remove('on'));
-  const ci = document.getElementById('allergy-custom');
-  if(ci) { ci.value=''; recPrefs.allergyCustom=''; }
-  b.classList.add('on');
-  recPrefs.allergy = ['ninguna'];
-  clearAllergyError();
-}
-function onAllergyCustomInput() {
-  const v = document.getElementById('allergy-custom').value.trim();
-  recPrefs.allergyCustom = v;
-  if(v) {
-    document.querySelectorAll('.opt-btn[data-key="allergy"]').forEach(o=>o.classList.remove('on'));
-    recPrefs.allergy = ['custom'];
-    clearAllergyError();
-  } else {
-    if(recPrefs.allergy.includes('custom')) recPrefs.allergy = [];
-  }
-}
-function allergyAnswered() {
-  const hasChip = recPrefs.allergy.length > 0;
-  const hasCustom = (document.getElementById('allergy-custom')?.value||'').trim().length > 0;
-  return hasChip || hasCustom;
-}
-function validateAllergyAndNext() {
-  if (!allergyAnswered()) {
-    const err = document.getElementById('allergy-error');
-    err.style.display = 'flex';
-    const step = document.getElementById('rs-2');
-    step.style.animation = 'none';
-    step.offsetHeight;
-    step.style.animation = 'shake .4s ease';
-    return;
-  }
-  recNext(3);
-}
-function clearAllergyError() {
-  const err = document.getElementById('allergy-error');
-  if(err) err.style.display = 'none';
-}
-function recNext(n) {
-  document.getElementById('rs-'+currentStep).classList.remove('on');
-  currentStep=n;
-  document.getElementById('rs-'+n).classList.add('on');
-  updateDots(n);
-}
-function recBack(p) {
-  document.getElementById('rs-'+currentStep).classList.remove('on');
-  currentStep=p;
-  document.getElementById('rs-'+p).classList.add('on');
-  updateDots(p);
-}
-function showResults() {
-  document.getElementById('rs-3').classList.remove('on');
-  updateDots(4);
-  const available = DISHES.filter(d=>d.avail!=='sold');
-  function applyHardFilters(list) {
-    let r = [...list];
-    if(recPrefs.allergy.includes('mariscos')) r=r.filter(d=>!d.cats.includes('mariscos')&&!d.allergens.some(a=>a.toLowerCase().includes('marisco')));
-    if(recPrefs.allergy.includes('gluten'))   r=r.filter(d=>d.tags.includes('gf'));
-    if(recPrefs.allergy.includes('lacteos'))  r=r.filter(d=>!d.allergens.some(a=>a.toLowerCase().includes('lácteo')));
-    if(recPrefs.allergy.includes('huevo'))    r=r.filter(d=>!d.allergens.some(a=>a.toLowerCase().includes('huevo')));
-    if(recPrefs.allergy.includes('soja'))     r=r.filter(d=>!d.allergens.some(a=>a.toLowerCase().includes('soja')));
-    if(recPrefs.allergy.includes('frutos'))   r=r.filter(d=>!d.allergens.some(a=>a.toLowerCase().includes('nuez')||a.toLowerCase().includes('piñon')));
-    return r;
-  }
-  function scoreDishs(list) {
-    return list.map(d => {
-      let s = 0;
-      if(recPrefs.protein==='mariscos'    && d.cats.includes('mariscos'))    s+=2;
-      if(recPrefs.protein==='carne'       && d.cats.includes('carnes'))      s+=2;
-      if(recPrefs.protein==='vegetariano' && d.cats.includes('vegetariano')) s+=2;
-      if(recPrefs.protein==='pollo')      s+=1;
-      if(recPrefs.mood==='ligero'     && d.price<25)                                           s+=1;
-      if(recPrefs.mood==='indulgente' && d.price>=29)                                          s+=1;
-      if(recPrefs.mood==='fresco'     && (d.cats.includes('entradas')||d.cats.includes('vegetariano'))) s+=1;
-      if(recPrefs.mood==='fuerte'     && d.price>=29)                                          s+=1;
-      if(recPrefs.spice==='no'   && d.spice===0) s+=1;
-      if(recPrefs.spice==='medio'&& d.spice===1) s+=1;
-      if(recPrefs.spice==='alto' && d.spice>=2)  s+=1;
-      if(recPrefs.spice==='no'   && d.spice>0)  s-=2;
-      if(recPrefs.spice==='alto' && d.spice===0) s-=1;
-      return {d, s};
-    }).sort((a,b)=>b.s-a.s);
-  }
-  const safe = applyHardFilters(available);
-  const scored = scoreDishs(safe.length ? safe : available);
-  const maxScore = scored[0]?.s ?? 0;
-  const idealThreshold = Math.max(maxScore - 1, 1);
-  const ideal = scored.filter(x=>x.s>=idealThreshold).slice(0,2).map(x=>x.d);
-  const idealIds = new Set(ideal.map(d=>d.id));
-  const alts = scored.filter(x=>!idealIds.has(x.d.id)).slice(0,3).map(x=>x.d);
-  function buildResCard(d, label, labelColor) {
-    return `<div class="res-card">
-      ${dishImageMarkup(d, 'res-img', .34)}
-      <div class="res-info">
-        <div class="res-match" style="color:${labelColor}">✦ ${label}</div>
-        <div class="res-nm">${d.name}</div>
-        <div class="res-why">${d.desc}</div>
-        <div class="res-price">$${d.price}</div>
-      </div>
-      <button class="btn-gold-sm" style="align-self:center;flex-shrink:0" onclick="addToCart(${d.id})">+</button>
-    </div>`;
-  }
-  document.getElementById('results-ideal').innerHTML =
-    ideal.map((d,i)=>buildResCard(d,i===0?'MATCH IDEAL':'TAMBIÉN IDEAL','var(--gold)')).join('');
-  const altWrap = document.getElementById('results-alt-wrap');
-  if(alts.length) {
-    altWrap.style.display='block';
-    document.getElementById('results-alt').innerHTML = alts.map(d=>buildResCard(d,'OTRA OPCIÓN','var(--t2)')).join('');
-  } else { altWrap.style.display='none'; }
-  document.getElementById('rec-results').classList.add('on');
-}
-
-/* ─── LANG ─── */
-function toggleLang() {
-  lang = lang==='ES'?'EN':'ES';
-  document.getElementById('lang-btn').textContent = lang;
-  document.getElementById('hdr-sub').textContent  = lang==='ES'?'Mesa 12 · Dishly':'Table 12 · Dishly';
-  toast(lang==='EN'?'🌐 Switched to English (demo)':'🌐 Cambiado a español');
-}
-
-/* ─── TOAST ─── */
-let _tt=null;
-function toast(msg) {
-  const el=document.getElementById('toast-el');
-  el.textContent=msg; el.classList.add('on');
-  if(_tt) clearTimeout(_tt);
-  _tt=setTimeout(()=>el.classList.remove('on'),2600);
-}
-
-/* ─── BIZ ─── */
-function bizToast() {
-  toast('\u{1F4EC} Solicitud recibida. En una versión real, aquí se abriría el formulario de contacto o agenda.');
-}
-
-/* ─── INIT ─── */
-renderDishes(DISHES);
-buildChefList();
-buildPopGrid();
-</script>
+  <script src="assets/js/pitch.js" defer></script>
 </body>
 </html>

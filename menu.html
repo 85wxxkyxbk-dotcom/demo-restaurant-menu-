@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10241d">
+  <meta name="description" content="Menú interactivo de demostración para Casa Marea.">
+  <meta property="og:title" content="Casa Marea | Menú interactivo">
+  <meta property="og:description" content="Ingredientes frescos, fuego y sabores costeros.">
+  <meta property="og:image" content="assets/images/og-dishly.webp">
+  <title>Casa Marea | Menú</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/images/hero-casa-marea.webp" as="image" type="image/webp">
+  <link rel="stylesheet" href="assets/css/menu.css">
+  <script src="assets/js/menu.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#menu">Saltar al menú</a>
+
+  <header class="menu-header" id="top">
+    <a class="restaurant-mark" href="#top" aria-label="Casa Marea, inicio">
+      <span class="mark-symbol" aria-hidden="true">CM</span>
+      <span>
+        <strong>Casa Marea</strong>
+        <small>Mediterráneo contemporáneo</small>
+      </span>
+    </a>
+    <button class="cart-trigger" id="cartTrigger" type="button" aria-label="Abrir carrito, 0 artículos" aria-controls="cartDrawer">
+      <span aria-hidden="true">Pedido</span>
+      <strong id="cartCount">0</strong>
+    </button>
+  </header>
+
+  <main>
+    <section class="menu-hero" aria-labelledby="heroTitle">
+      <img src="assets/images/hero-casa-marea.webp" alt="Mesa servida con platos mediterráneos en Casa Marea" width="1600" height="1000">
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Mediterráneo contemporáneo</p>
+        <h1 id="heroTitle">Casa Marea</h1>
+        <p>Ingredientes frescos, fuego y sabores costeros.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#menu">Explorar menú</a>
+          <button class="button button-secondary" type="button" data-open-recommender>Ayúdame a elegir</button>
+        </div>
+      </div>
+      <a class="hero-scroll" href="#shortcuts">Descubrir</a>
+    </section>
+
+    <section class="shortcuts shell" id="shortcuts" aria-label="Accesos rápidos">
+      <button type="button" data-scroll-menu>
+        <span>01</span>
+        <strong>Ver menú</strong>
+        <small>Explora todos los platos</small>
+      </button>
+      <button type="button" data-open-recommender>
+        <span>02</span>
+        <strong>Ayúdame a elegir</strong>
+        <small>Recomendación inteligente</small>
+      </button>
+      <button type="button" data-filter-shortcut="chef">
+        <span>03</span>
+        <strong>Favoritos del chef</strong>
+        <small>Selección de la casa</small>
+      </button>
+      <button type="button" data-filter-shortcut="popular">
+        <span>04</span>
+        <strong>Más pedidos</strong>
+        <small>Los preferidos de la mesa</small>
+      </button>
+    </section>
+
+    <section class="daily-special shell" aria-labelledby="specialTitle">
+      <div>
+        <p class="eyebrow">Sugerencia del día</p>
+        <h2 id="specialTitle">Branzino a la parrilla</h2>
+        <p>Con hinojo asado, aceituna verde y beurre blanc de limón.</p>
+      </div>
+      <button class="text-button" type="button" data-dish-id="branzino">Ver el plato</button>
+    </section>
+
+    <section class="menu-section" id="menu" aria-labelledby="menuTitle">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Nuestra cocina</p>
+            <h2 id="menuTitle">El menú</h2>
+          </div>
+          <p>Una carta breve, estacional y hecha para compartir.</p>
+        </div>
+
+        <div class="category-nav" id="categoryNav" role="toolbar" aria-label="Filtrar platos por categoría">
+          <button class="is-active" type="button" data-category="all" aria-pressed="true">Todos</button>
+          <button type="button" data-category="entradas" aria-pressed="false">Entradas</button>
+          <button type="button" data-category="principales" aria-pressed="false">Principales</button>
+          <button type="button" data-category="vegetariano" aria-pressed="false">Vegetariano</button>
+          <button type="button" data-category="postres" aria-pressed="false">Postres</button>
+        </div>
+
+        <p class="allergen-notice">
+          <strong>Información importante:</strong> La información de alérgenos es orientativa. Informa siempre al personal sobre alergias graves o riesgo de contaminación cruzada.
+        </p>
+
+        <div class="dish-grid" id="dishGrid" aria-live="polite"></div>
+        <p class="empty-state" id="emptyState" hidden>No hay platos disponibles en esta selección.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="menu-footer">
+    <div class="shell">
+      <div>
+        <strong>Casa Marea</strong>
+        <p>Menú de demostración. Precios y disponibilidad ficticios.</p>
+      </div>
+      <a href="index.html">Menú impulsado por Dishly</a>
+    </div>
+  </footer>
+
+  <div class="modal-layer" id="dishModal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="dish-modal" role="dialog" aria-modal="true" aria-labelledby="dishModalTitle">
+      <button class="icon-close" type="button" data-close-modal aria-label="Cerrar detalles">×</button>
+      <div id="dishModalContent"></div>
+    </section>
+  </div>
+
+  <div class="drawer-layer" id="cartLayer" hidden>
+    <div class="modal-backdrop" data-close-cart></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-labelledby="cartTitle" aria-modal="true" role="dialog">
+      <header>
+        <div>
+          <p class="eyebrow">Mesa 12 · demostración</p>
+          <h2 id="cartTitle">Tu pedido</h2>
+        </div>
+        <button class="icon-close" type="button" data-close-cart aria-label="Cerrar carrito">×</button>
+      </header>
+      <div class="cart-body" id="cartBody"></div>
+      <footer class="cart-footer" id="cartFooter"></footer>
+    </aside>
+  </div>
+
+  <div class="modal-layer" id="recommenderModal" hidden>
+    <div class="modal-backdrop" data-close-recommender></div>
+    <section class="recommender-modal" role="dialog" aria-modal="true" aria-labelledby="recommenderTitle">
+      <button class="icon-close" type="button" data-close-recommender aria-label="Cerrar asistente">×</button>
+      <div id="recommenderContent"></div>
+    </section>
+  </div>
+
+  <div class="modal-layer" id="transferModal" hidden>
+    <div class="modal-backdrop" data-close-transfer></div>
+    <section class="transfer-modal" role="dialog" aria-modal="true" aria-labelledby="transferTitle">
+      <button class="icon-close" type="button" data-close-transfer aria-label="Cerrar transferencia">×</button>
+      <div id="transferContent"></div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
